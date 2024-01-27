@@ -4,6 +4,7 @@ import {
   Route,
 } from 'react-router-dom';
 import StartPage from './pages/StartPage';
+import CreateReview from './pages/CreateReview';
 import { Content } from './Content';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Content>
             <Routes>
               <Route path="/" element={<StartPage />} />
+              <Route path="/newReview" element={<CreateReview />} />
             </Routes>
           </Content>
         </BrowserRouter>
