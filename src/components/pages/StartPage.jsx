@@ -1,5 +1,7 @@
 function StartPage() {
 
+    const api = 'https://cars-base.ru/api/cars';
+    
     const greeting = (
         <>
             <h1>CAR REVIEWS</h1>
@@ -10,6 +12,7 @@ function StartPage() {
 
     const autos = [{ manufacturer: "Audi", model: "A4", year: 2015, mileage: 150000 },
     { manufacturer: "BMW", model: "520", year: 2020, mileage: 70000 }];
+   
     return (
         <>
             {greeting}
