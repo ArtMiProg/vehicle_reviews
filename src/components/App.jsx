@@ -6,6 +6,7 @@ import {
 import StartPage from './pages/StartPage';
 import CreateReview from './pages/CreateReview';
 import { Content } from './Content';
+import UserAccount from './pages/UserAccount';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
             <Routes>
               <Route path="/" element={<StartPage />} />
               <Route path="/newReview" element={<CreateReview />} />
+              <Route path="/account" element={<UserAccount />} />
             </Routes>
           </Content>
         </BrowserRouter>
