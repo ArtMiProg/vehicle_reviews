@@ -1,3 +1,5 @@
+import React from "react";
+
 function UserAccount(){
     const fullName = "Sam Witerspoon";
     const username = "TechSmart";

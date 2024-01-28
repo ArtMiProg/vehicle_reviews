@@ -1,30 +1,29 @@
 import React, { useState } from "react";
-import { loadCars } from "../../api/carsApi";
+import { loadCars, Car, Model } from "../../api/carsApi";
 import { useLoad } from "../../hooks/useLoad";
 
 function CreateReview() {
-    const reviewTitle = 'create review here';
-    const user = 'Paul Stown';
+    const reviewTitle: string = 'create review here';
+    const user: string = 'Paul Stown';
 
     const { data, isLoading } = useLoad(loadCars);
 
-    const [selectedCar, setSelectedCar] = useState("");
-    const [selectedModel, setSelectedModel] = useState("");
+    const [selectedCar, setSelectedCar] = useState<string>(""); 
+    const [selectedModel, setSelectedModel] = useState<string>("");
+    const fuelTypes: string[] = ["gasoline", "diesel", "gas", "electro"];
 
-    const fuelTypes = ["gasoline", "diesel", "gas", "electro"];
+    const releaseYear: string = "year";
 
-    const releaseYear = "year";
+    type Issue = {issue: string, yearOfExploitation: number, mileage: number, description: string };
+    const addIssue: Issue = {issue: "issue", yearOfExploitation: 5, mileage: 80000, description: "textOfDescription" };
 
-    const addIssue = {issue: "issue", yearOfExploitation: "year", mileage: "mileage", description: "textOfDescription" };
-
-    const generalImpressionAboutCar = "textField";
+    const generalImpressionAboutCar: string = "textField";
 
     return (
         <>
             {reviewTitle}<br></br>
             {user}
             <div>
-                {/* First dropdown for car names */}
                 <label>
                     Select Car:
                     <select
@@ -41,7 +40,6 @@ function CreateReview() {
                 </label>
                 <br />
 
-                {/* Second dropdown for car models */}
                 <label>
                     Select Model:
                     <select
@@ -49,7 +47,6 @@ function CreateReview() {
                         onChange={(e) => setSelectedModel(e.target.value)}
                     >
                         <option value="">Select Model</option>
-                        {/* Only show models if a car is selected */}
                         {selectedCar &&
                             data
                                 .find((auto) => auto.name === selectedCar)
@@ -62,7 +59,6 @@ function CreateReview() {
                 </label>
             </div>
 
-            {/* Display selected car and model */}
             <div>
                 <p>Selected Car: {selectedCar}</p>
                 <p>Selected Model: {selectedModel}</p>

@@ -1,3 +1,4 @@
+import React from "react";
 
 
 function StartPage() {
@@ -7,6 +8,8 @@ function StartPage() {
     // const makersAndModels = (api + "/api/cars?full=1")
     // const makers = (api + "/api/cars");
     // const modelsid = (api + "/api/cars/[mark_id]");
+
+    // npm install --save typescript @types/node @types/react-dam @types/jest
 
     const greeting = (
         <>
