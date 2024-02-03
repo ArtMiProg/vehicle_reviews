@@ -2,21 +2,21 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { User } from "../AuthContext";
 import { Fault } from "../fault/FaultComponent";
-import { createReview } from "./ReviewComponent";
+import { Review, createReview } from "./ReviewComponent";
 import { v4 as uuidv4 } from 'uuid';
-import { Car } from "../car/CarComponent";
+import { Car, addReviewToCar } from "../car/CarComponent";
 
 function CreateReview() {
     const reviewTitle: string = 'create review here';
     const user: User = JSON.parse(localStorage.getItem("currentUser") || "null");
     const { carId } = useParams();
-    const car : Car | undefined = user.cars.find((car) => car.id === carId);
+    const car: Car | undefined = user.cars.find((car) => car.id === carId);
     const [releaseYear, setReleaseYear] = useState<string | number>("")
     const years: number[] = Array.from({ length: new Date().getFullYear() - 1900 }, (_, index) => new Date().getFullYear() - index);
     useEffect(() => {
         setReleaseYear(new Date().getFullYear());
     }, []);
-
+    const [carReviews, setCarReviews] = useState<Review[]>([]);
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
     const [newFault, setNewFault] = useState<Fault>({
         id: "",
@@ -54,24 +54,22 @@ function CreateReview() {
         console.log("Updated Faults:", updatedFaults);
         localStorage.setItem('faults', JSON.stringify(updatedFaults));
     };
-    
+
     const handleGeneralImpressionSubmit = () => {
         setGeneralImpressionAboutCar(generalImpressionAboutCar);
         toggleGeneralImpression();
-        console.log("General Impression:", generalImpressionAboutCar);
         localStorage.setItem('generalImpression', JSON.stringify(generalImpressionAboutCar));
     };
     const navigate = useNavigate();
     const handleReviewSubmit = () => {
         const reviewId = uuidv4();
-        // Create a new review object
         const newReview = createReview(reviewId, user, car, releaseYear, faults, generalImpressionAboutCar, 4);
-    
-        // Save the new review to local storage
-        const existingReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
-        const updatedReviews = [...existingReviews, newReview];
-        localStorage.setItem("reviews", JSON.stringify(updatedReviews));
-    
+        addReviewToCar(car, newReview);
+        const updatedReviews = [...carReviews, newReview];
+        setCarReviews(updatedReviews);
+        const updatedCar = car ? { ...car, reviews: updatedReviews } : undefined;
+        const updatedUser = user ? {...user, cars: updatedCar} : undefined;
+        // localStorage.setItem('currentUser', JSON.stringify(updatedUser));        
         navigate("/account");
     };
     return (
@@ -155,7 +153,7 @@ function CreateReview() {
                     <button onClick={handleGeneralImpressionSubmit}>Submit General Impression</button>
                 </div>
             )}
-            
+
             {generalImpressionAboutCar && (
                 <div>
                     <p>General Impression:</p>

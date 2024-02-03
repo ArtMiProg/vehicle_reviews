@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { User } from "../AuthContext";
 import { Link } from "react-router-dom";
 
-
-
 function AdminPanel() {
   const [users, setUsers] = useState<User[]>(JSON.parse(localStorage.getItem("users") || "[]"));
   const onDeleteUser = (userId: string) => {

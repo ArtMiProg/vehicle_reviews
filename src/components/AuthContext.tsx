@@ -14,7 +14,7 @@ export interface User {
     password: string;
     name: string;
     surname: string;
-    role: UserRole; // Add the role property
+    role: UserRole; 
     cars: Car[];
     reviews: Review[];
 }
@@ -35,13 +35,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
 
   const signIn = (username: string, password: string) => {
-    // Simplified authentication logic, you should validate credentials with your backend
-    // For now, let's assume a user with a hardcoded password
+   
     if (password === 'password') {
       const newUser: User = {
           id: uuidv4(),
           username,
-          password, // In a real application, you would not store the plain password like this
+          password, 
           name: 'John',
           surname: 'Doe',
           role: UserRole.USER,

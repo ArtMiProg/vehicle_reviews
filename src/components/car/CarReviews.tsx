@@ -1,39 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Review } from "../review/ReviewComponent";
+import { User } from "../AuthContext";
+import { Car } from "./CarComponent";
 // ... other imports
 
 function CarReviews() {
-  const { carId } = useParams();
-  const [reviews, setReviews] = useState<Review[]>([]);
-
-//   useEffect(() => {
-//     // Assuming you have an API function to fetch reviews by carId
-//     // Adjust the API call based on your actual implementation
-//     const fetchReviews = async () => {
-//       try {
-//         const response = await api.fetchCarReviews(carId); // Replace with your actual API function
-//         setReviews(response.data); // Update based on your API response structure
-//       } catch (error) {
-//         console.error("Error fetching car reviews", error);
-//       }
-//     };
-
-//     fetchReviews();
-//   }, [carId]);
-
-  return (
-    <div>
-      <h2>Reviews for the Selected Car</h2>
-      {reviews.map((review) => (
-        <div key={review.id}>
-          <p>User: {review.user.name}</p>
-          <p>General Impression: {review.generalImpression}</p>
-          {/* Display other review details as needed */}
+    const user: User = JSON.parse(localStorage.getItem("currentUser") || "null");
+    const { carId } = useParams();
+    const car: Car | undefined = user.cars.find((car) => car.id === carId);
+    console.log(car)
+    const reviews = car?.reviews;
+    console.log(reviews)
+    return (
+        <div>
+            <h2>Reviews for {car?.maker} {car?.model} {car?.fuelType} </h2>
+            {reviews && reviews.length > 0 ? (
+                reviews.map((review) => (
+                    <div key={review.id}>
+                        <p>User: {review.user.name}</p>
+                        <p>General Impression: {review.generalImpression}</p>
+                        {/* TODO */}
+                    </div>
+                ))
+            ) : (
+                <p>No reviews available for this car.</p>
+            )}
         </div>
-      ))}
-    </div>
-  );
+    );
 }
 
 export default CarReviews;

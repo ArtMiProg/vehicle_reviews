@@ -10,13 +10,12 @@ import CreateReview from './review/CreateReview';
 import SampleScenario from './SampleScenario';
 import React, {useState} from 'react';
 import { AuthProvider, User, UserRole } from './AuthContext';
-import AdminPanel from "./admin/AdminPanel"; // Import the AdminPanel component
+import AdminPanel from "./admin/AdminPanel"; 
 import CarReviews from './car/CarReviews';
 
-
 function App() {
+  
   const currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
-
 
   return (
     <>

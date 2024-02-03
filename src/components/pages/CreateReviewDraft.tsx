@@ -184,7 +184,6 @@ function CreateReviewDraft() {
                 <p>Selected Car: {selectedCar}</p>
                 <p>Selected Model: {selectedModel}</p>
                 <p>Selected Release year: {releaseYear}</p>
-                {/* <p>Selected Fuel type: {selectedFuelType}</p> */}
             </div>
             <div>
                 {issues.map((issue, index) => (
@@ -203,10 +202,7 @@ function CreateReviewDraft() {
                 onChange={(e) => setGeneralImpressionAboutCar(e.target.value)}
                 placeholder="General Impression About Car"
             />
-            {/* Button to submit general impression */}
             <button onClick={handleGeneralImpressionSubmit}>Submit General Impression</button>
-
-            {/* Display general impression */}
             {generalImpressionAboutCar && (
                 <div>
                     <p>General Impression:</p>
