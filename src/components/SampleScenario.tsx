@@ -14,8 +14,8 @@ const car2: Car = createCar('2', Maker.BMW, Model.M520, FuelType.Diesel);
 addCarToUser(user1, car1);
 addCarToUser(user2, car2);
 
-const review1: Review = createReview('1', user1, car1, '2015', [], 'Excellent car!', 5);
-const review2: Review = createReview('2', user2, car2, '2015', [], 'Great performance', 4);
+const review1: Review = createReview('1', user1, '2', '2015', [], 'Excellent car!', 5);
+const review2: Review = createReview('2', user2, '3', '2015', [], 'Great performance', 4);
 
 addReviewToUser(user1, review1);
 addReviewToUser(user2, review2);

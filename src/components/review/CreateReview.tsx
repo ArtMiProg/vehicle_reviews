@@ -8,6 +8,7 @@ import { Car, addReviewToCar } from "../car/CarComponent";
 
 function CreateReview() {
     const reviewTitle: string = 'create review here';
+    const [reviews, setReviews] = useState<Review[]>([]);
     const user: User = JSON.parse(localStorage.getItem("currentUser") || "null");
     const { carId } = useParams();
     const car: Car | undefined = user.cars.find((car) => car.id === carId);
@@ -16,7 +17,7 @@ function CreateReview() {
     useEffect(() => {
         setReleaseYear(new Date().getFullYear());
     }, []);
-    const [carReviews, setCarReviews] = useState<Review[]>([]);
+   
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
     const [newFault, setNewFault] = useState<Fault>({
         id: "",
@@ -63,13 +64,14 @@ function CreateReview() {
     const navigate = useNavigate();
     const handleReviewSubmit = () => {
         const reviewId = uuidv4();
-        const newReview = createReview(reviewId, user, car, releaseYear, faults, generalImpressionAboutCar, 4);
-        addReviewToCar(car, newReview);
-        const updatedReviews = [...carReviews, newReview];
-        setCarReviews(updatedReviews);
-        const updatedCar = car ? { ...car, reviews: updatedReviews } : undefined;
-        const updatedUser = user ? {...user, cars: updatedCar} : undefined;
-        // localStorage.setItem('currentUser', JSON.stringify(updatedUser));        
+        const carId : string | undefined = car?.id; 
+        const newReview = createReview(reviewId, user, carId, releaseYear, faults, generalImpressionAboutCar, 4);
+        const updatedReviews = [...reviews, newReview];
+        setReviews(updatedReviews);
+        console.log(updatedReviews);
+        
+        localStorage.setItem('reviews', JSON.stringify(updatedReviews));
+                
         navigate("/account");
     };
     return (

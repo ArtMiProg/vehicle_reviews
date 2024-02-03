@@ -5,7 +5,7 @@ import { Fault } from '../fault/FaultComponent';
 export interface Review {
   id: string;
   user: User;
-  car: Car | undefined;
+  carId: string | undefined;
   releaseYear: string | number;
   faults: Fault[];
   generalImpression: string;
@@ -15,7 +15,7 @@ export interface Review {
 export function createReview(
   id: string,
   user: User,
-  car: Car | undefined,
+  carId: string | undefined,
   releaseYear: string | number,
   faults: Fault[],
   generalImpression: string,
@@ -23,7 +23,7 @@ export function createReview(
   return {
     id,
     user,
-    car,
+    carId,
     releaseYear,
     faults,
     generalImpression,

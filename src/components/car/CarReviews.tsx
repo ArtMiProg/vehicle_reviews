@@ -9,8 +9,9 @@ function CarReviews() {
     const user: User = JSON.parse(localStorage.getItem("currentUser") || "null");
     const { carId } = useParams();
     const car: Car | undefined = user.cars.find((car) => car.id === carId);
-    console.log(car)
-    const reviews = car?.reviews;
+    console.log(car);
+    const allReviews : Review[] = JSON.parse(localStorage.getItem('reviews') || "null");
+    const reviews = allReviews.filter(review => review.carId === car?.id);
     console.log(reviews)
     return (
         <div>
