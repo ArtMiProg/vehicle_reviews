@@ -42,7 +42,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           username,
           password, 
           name: 'John',
-          surname: 'Doe',
+          surname: 'Smith',
           role: UserRole.USER,
           cars: [],
           reviews: []

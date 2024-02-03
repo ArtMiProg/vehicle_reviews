@@ -19,14 +19,13 @@ function AddCarForm({ onAddCar }: AddCarFormProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Assume you have a function to generate a unique ID (e.g., generateUniqueId())
+      
         const carId = uuidv4();
 
-        const newCar = createCar(carId, maker, model, fuelType); // Adjust as needed
+        const newCar = createCar(carId, maker, model, fuelType);
 
         onAddCar(newCar);
 
-        // Reset form
         setMaker('');
         setModel('');
     };

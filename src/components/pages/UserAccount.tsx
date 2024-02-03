@@ -12,6 +12,7 @@ function UserAccount() {
     const updatedCars = [...userCars, newCar];
     setUserCars(updatedCars);
     const updatedUser = { ...user, cars: updatedCars };
+  
     localStorage.setItem('currentUser', JSON.stringify(updatedUser));
   };
 
