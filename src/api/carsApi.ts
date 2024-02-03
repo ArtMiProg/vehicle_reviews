@@ -1,6 +1,6 @@
 const BASE_URL = "https://cars-base.ru/api/cars";
 
-export interface Car {
+export interface Maker {
     id: number;
     name: string;
     cyrillicName: string;
@@ -18,8 +18,11 @@ export interface Model {
     yearTo: number;
 };
 
-export async function loadCars(): Promise<Car[]> {
+export async function loadCars(): Promise<Maker[]> {
     const response = await fetch(`${BASE_URL}?full=1`);
-    console.log(response);
+    if (response.status >= 400) {
+        throw new Error(response.statusText);
+        console.log(response);
+    }
     return await response.json();
 }
