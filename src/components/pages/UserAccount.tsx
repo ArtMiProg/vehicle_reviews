@@ -14,7 +14,7 @@ function UserAccount() {
     const updatedCars = [...existingCars, newCar];
     const checkDuplicationUserCar: Car | undefined = userCars.find(car =>
       newCar.maker === maker && newCar.model === model && newCar.fuelType === fuelType);
-    if (!checkDuplicationUserCar) {
+    if (checkDuplicationUserCar) {
       const updatedUserCars = [...userCars, newCar]
       setUserCars(updatedUserCars);
       const updatedUser = { ...user, cars: updatedUserCars };

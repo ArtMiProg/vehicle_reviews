@@ -4,6 +4,11 @@ import SignInForm from "./SingInForm";
 import { User } from "../AuthContext";
 import { Link } from "react-router-dom";
 import { Review } from "../review/ReviewComponent";
+import { useAppSelector } from "../../hooks/hooks";
+import  {RootState} from "../../store/index";
+import {ReviewsState} from "../../store/reviewsSlice";
+
+
 
 function StartPage() {
 
@@ -60,9 +65,11 @@ function StartPage() {
     const autosExample = [{ manufacturer: "Audi", model: "A4", year: 2015, mileage: 150000 },
     { manufacturer: "BMW", model: "520", year: 2020, mileage: 70000 }];
 
-    const allReviews: Review[] = JSON.parse(localStorage.getItem('reviews') || "null");
-
-
+    // const allReviews: Review[] = JSON.parse(localStorage.getItem('reviews') || "null");
+    
+    // @ts-ignore 
+    const  allReviews : Review[] = useAppSelector((state : ReviewsState) => state.reviews.reviews);
+    
 
     return (
         <>

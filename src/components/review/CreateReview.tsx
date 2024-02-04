@@ -5,6 +5,10 @@ import { Fault } from "../fault/FaultComponent";
 import { Review, createReview } from "./ReviewComponent";
 import { v4 as uuidv4 } from 'uuid';
 import { Car } from "../car/CarComponent";
+import { useDispatch } from "react-redux";
+import { loadReviewsActions } from "../../actions/loadings";
+import { useAppDispatch } from "../../hooks/hooks";
+import { actions } from "../../store";
 
 function CreateReview() {
     const reviewTitle: string = 'create review here';
@@ -17,7 +21,7 @@ function CreateReview() {
     useEffect(() => {
         setReleaseYear(new Date().getFullYear());
     }, []);
-   
+
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
     const [newFault, setNewFault] = useState<Fault>({
         id: "",
@@ -62,16 +66,22 @@ function CreateReview() {
         localStorage.setItem('generalImpression', JSON.stringify(generalImpressionAboutCar));
     };
     const navigate = useNavigate();
+    //@ts-ignore
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        loadReviewsActions(dispatch, reviews);
+    }, [dispatch, reviews]);
+
     const handleReviewSubmit = () => {
         const reviewId = uuidv4();
-        const carId : string | undefined = car?.id; 
+        const carId: string | undefined = car?.id;
         const newReview = createReview(reviewId, user, carId, releaseYear, faults, generalImpressionAboutCar, 4);
         const updatedReviews = [...reviews, newReview];
         setReviews(updatedReviews);
-        console.log(updatedReviews);
-        
+        //@ts-ignore
+        dispatch(actions.reviews.loadReviews(updatedReviews));
         localStorage.setItem('reviews', JSON.stringify(reviews));
-                
         navigate("/account");
     };
     return (

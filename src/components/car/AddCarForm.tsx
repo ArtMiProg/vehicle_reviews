@@ -22,7 +22,7 @@ function AddCarForm({ onAddCar }: AddCarFormProps) {
         const existingCar: Car | undefined = existingCars.find(car =>
             car.maker === maker && car.model === model && car.fuelType === fuelType); 
         if (existingCar) {
-            onAddCar(existingCar, maker, model, fuelType)   
+            onAddCar(existingCar, maker, model, fuelType);
         } else {
             const carId = uuidv4();
             const newCar = createCar(carId, maker, model, fuelType);
