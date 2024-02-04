@@ -4,7 +4,7 @@ import { User } from "../AuthContext";
 import { Fault } from "../fault/FaultComponent";
 import { Review, createReview } from "./ReviewComponent";
 import { v4 as uuidv4 } from 'uuid';
-import { Car, addReviewToCar } from "../car/CarComponent";
+import { Car } from "../car/CarComponent";
 
 function CreateReview() {
     const reviewTitle: string = 'create review here';
@@ -70,7 +70,7 @@ function CreateReview() {
         setReviews(updatedReviews);
         console.log(updatedReviews);
         
-        localStorage.setItem('reviews', JSON.stringify(updatedReviews));
+        localStorage.setItem('reviews', JSON.stringify(reviews));
                 
         navigate("/account");
     };
@@ -81,7 +81,7 @@ function CreateReview() {
             {car?.maker} {car?.model} <br></br>
             {car?.fuelType}
             <p>
-                Release year: {releaseYear}
+                Car is of {releaseYear} release year
                 <label>
                     <select
                         value={releaseYear}

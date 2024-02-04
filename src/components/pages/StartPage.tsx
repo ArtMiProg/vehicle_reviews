@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import RegistrationForm from './RegistrationForm';
 import SignInForm from "./SingInForm";
 import { User } from "../AuthContext";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Review } from "../review/ReviewComponent";
 
 function StartPage() {
 
@@ -59,6 +60,8 @@ function StartPage() {
     const autosExample = [{ manufacturer: "Audi", model: "A4", year: 2015, mileage: 150000 },
     { manufacturer: "BMW", model: "520", year: 2020, mileage: 70000 }];
 
+    const allReviews: Review[] = JSON.parse(localStorage.getItem('reviews') || "null");
+
 
 
     return (
@@ -82,7 +85,24 @@ function StartPage() {
             {showRegistration && <RegistrationForm onClose={handleRegistrationClose} />}
             <button onClick={handleSignInClick}>Sign In</button>
 
-            {showSignInForm && <SignInForm onClose={(user) => handleSignInClose(user)}/>}
+            {showSignInForm && <SignInForm onClose={(user) => handleSignInClose(user)} />}
+
+            {allReviews.map((review) => (
+                <div key={review.id}>
+                    <p>User: {review.user.name}</p>
+                    <p>Car is of {review.releaseYear} release year</p>
+                    <p>General Impression: {review.generalImpression}</p>
+                    {review.faults.map((fault) => (
+                        <div key={fault.id}>
+                            <p>The part that fault: {fault.shortDescription}</p>
+                            <p>I happened on the {fault.yearOfExploitation} year of exploitation</p>
+                            <p>The car past at the moment about {fault.mileage} km</p>
+                            <p>The issue was the next: <br /> {fault.detailedDescription}</p>
+                        </div>
+                    ))}
+                </div>
+            ))
+            }
         </>
     )
 }

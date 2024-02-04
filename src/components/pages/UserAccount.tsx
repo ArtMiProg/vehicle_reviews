@@ -3,17 +3,24 @@ import { Link } from "react-router-dom";
 import { User, UserRole } from "../AuthContext";
 import { Car } from "../car/CarComponent";
 import AddCarForm from "../car/AddCarForm";
+import { FuelType } from "../../enums/FuelType";
 
 function UserAccount() {
   const user: User = JSON.parse(localStorage.getItem("currentUser") || "null");
+  const existingCars: Car[] = JSON.parse(localStorage.getItem('cars') || "[]");
   const [userCars, setUserCars] = useState<Car[]>(user.cars);
 
-  const handleAddCar = (newCar: Car) => {
-    const updatedCars = [...userCars, newCar];
-    setUserCars(updatedCars);
-    const updatedUser = { ...user, cars: updatedCars };
-      
-    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+  const handleAddCar = (newCar: Car, maker: string, model: string, fuelType: FuelType) => {
+    const updatedCars = [...existingCars, newCar];
+    const checkDuplicationUserCar: Car | undefined = userCars.find(car =>
+      newCar.maker === maker && newCar.model === model && newCar.fuelType === fuelType);
+    if (!checkDuplicationUserCar) {
+      const updatedUserCars = [...userCars, newCar]
+      setUserCars(updatedUserCars);
+      const updatedUser = { ...user, cars: updatedUserCars };
+      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    }
+    localStorage.setItem('cars', JSON.stringify(updatedCars));
   };
 
   const onDeleteCar = (carId: string) => {
@@ -22,6 +29,7 @@ function UserAccount() {
     const updatedUser = { ...user, cars: updatedCars };
     localStorage.setItem('currentUser', JSON.stringify(updatedUser));
   }
+
   return (
     <div>
       <h2>User Account</h2>
@@ -36,7 +44,7 @@ function UserAccount() {
       )}
       <p>Your Cars:</p>
       <ul>
-        {user.cars.map((car) => (
+        {userCars.map((car) => (
           <li key={car.id}>
             {car.maker} {car.model} {car.fuelType} - {' '}
             <Link to={`/addReview/${car.id}`}>Leave a Review</Link><br />

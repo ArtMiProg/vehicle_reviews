@@ -7,7 +7,6 @@ export interface Car {
   maker: string;
   model: string;
   fuelType: FuelType;
-  reviews: Review[];
 }
 
 export function createCar(id: string, maker: string, model: string, fuelType: FuelType): Car {
@@ -16,10 +15,9 @@ export function createCar(id: string, maker: string, model: string, fuelType: Fu
     maker,
     model,
     fuelType,
-    reviews: [],
   };
 }
 
-export function addReviewToCar(car: Car | undefined, review: Review): void {
-  car ? car.reviews.push(review) : console.error("There is no car to add the review to.");
-}
+// export function addReviewToCar(car: Car | undefined, review: Review): void {
+//   car ? car.reviews.push(review) : console.error("There is no car to add the review to.");
+// }

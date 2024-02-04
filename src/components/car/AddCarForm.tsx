@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { loadCars } from '../../api/carsApi';
+import { Maker, Model, loadCars } from '../../api/carsApi';
 import { FuelType } from '../../enums/FuelType';
 import { useLoad } from '../../hooks/useLoad';
 import { Car, createCar } from './CarComponent';
 
 interface AddCarFormProps {
-    onAddCar: (car: Car) => void;
+    onAddCar: (car: Car, maker: string, model: string, fuelType: FuelType) => void;
 }
 
 function AddCarForm({ onAddCar }: AddCarFormProps) {
@@ -18,14 +18,16 @@ function AddCarForm({ onAddCar }: AddCarFormProps) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
-      
-        const carId = uuidv4();
-
-        const newCar = createCar(carId, maker, model, fuelType);
-
-        onAddCar(newCar);
-
+        const existingCars: Car[] = JSON.parse(localStorage.getItem('cars') || "[]");
+        const existingCar: Car | undefined = existingCars.find(car =>
+            car.maker === maker && car.model === model && car.fuelType === fuelType); 
+        if (existingCar) {
+            onAddCar(existingCar, maker, model, fuelType)   
+        } else {
+            const carId = uuidv4();
+            const newCar = createCar(carId, maker, model, fuelType);
+            onAddCar(newCar,  maker, model, fuelType);
+        }
         setMaker('');
         setModel('');
     };

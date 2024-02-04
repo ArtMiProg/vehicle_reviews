@@ -20,7 +20,16 @@ function CarReviews() {
                 reviews.map((review) => (
                     <div key={review.id}>
                         <p>User: {review.user.name}</p>
+                        <p>Car is of {review.releaseYear} release year</p>
                         <p>General Impression: {review.generalImpression}</p>
+                        {review.faults.map((fault) => (
+                            <div key={fault.id}>
+                                <p>The part that fault: {fault.shortDescription}</p>
+                                <p>I happened on the {fault.yearOfExploitation} year of exploitation</p>
+                                <p>The car past at the moment about {fault.mileage} km</p>
+                                <p>The issue was the next: <br /> {fault.detailedDescription}</p>
+                            </div>
+                        ))}
                         {/* TODO */}
                     </div>
                 ))

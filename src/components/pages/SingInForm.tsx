@@ -16,7 +16,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ onClose }) => {
         const storedUsers = localStorage.getItem("users");
         const users = storedUsers ? JSON.parse(storedUsers) : [];
 
-        const user = users.find((user: any) => user.username === username && user.password === password);
+        const user = users.find((user: User) => user.username === username && user.password === password);
 
         if (user) {
             localStorage.setItem("currentUser", JSON.stringify(user));
