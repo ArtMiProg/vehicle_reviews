@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { UserRole } from '../AuthContext';
 import { createUser } from '../user/UserComponent';
 import { v4 as uuidv4 } from 'uuid';
+import { addUser } from '../../strapi/strapi';
 
 interface RegistrationFormProps {
     onClose: Function;
@@ -14,10 +15,11 @@ function RegistrationForm({ onClose }: RegistrationFormProps) {
     const [surname, setSurname] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
     const [role, setRole] = useState(UserRole.USER);
     const [errorMessage, setErrorMessage] = useState("");
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         const newUser = createUser(id, username, password, name, surname, role);
@@ -28,8 +30,23 @@ function RegistrationForm({ onClose }: RegistrationFormProps) {
         }
 
         const updatedUsers = [...existingUsers, newUser];
-        localStorage.setItem("users", JSON.stringify(updatedUsers));
-
+        // localStorage.setItem("users", JSON.stringify(updatedUsers));
+        try {
+            await addUser({
+                username: username,
+                password: password,
+                email: email,
+                provider: "local",
+                confirmed: false,
+                profile_slug: name,
+                role: {connect: [{ id: 1 }]},
+                name: name,
+                surname: surname
+            }
+            );
+        }catch (error){
+            console.error('error creating user', error);
+        }
         onClose();
     };
 
@@ -50,6 +67,10 @@ function RegistrationForm({ onClose }: RegistrationFormProps) {
             <label>
                 Password:
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </label>
+            <label>
+                email:
+                <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
             </label>
             <button type="submit">Register</button>
         </form>

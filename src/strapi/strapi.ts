@@ -35,6 +35,22 @@ export interface StrapiReview {
     }
 }
 
+export interface StrapiUser {
+    id: number;
+    username: string;
+    password: string;
+    email: string;
+    provider: string;
+    confirmed: boolean;
+    blocked: boolean;
+    createdAt: string,
+    updatedAt: string;
+    profile_slug: string;
+    role: object;
+    name: string;
+    surname: string;
+}
+
 export interface StrapiMetaPagination {
     page: number;
     pageSize: number;
@@ -107,7 +123,7 @@ export async function addReview(
         generalImpression: string | null,
         starRating: number
     }
-) : Promise<StrapiListResponse<StrapiReview>>{
+): Promise<StrapiListResponse<StrapiReview>> {
     const body = {
         data: {
             ...data,
@@ -128,4 +144,70 @@ export async function addReview(
     }
 
     return result;
+}
+
+export async function addUser(
+    data: {
+        username: string;
+        password: string;
+        email: string;
+        provider: string;
+        confirmed: boolean;
+        profile_slug: string;
+        role: {connect: [{id : number}]};
+        name: string;
+        surname: string;
+
+    }): Promise<StrapiListResponse<StrapiUser>> {
+    const body = {...data,};
+    //request formate:
+        // "username": "LanaIstwood",
+        // "password": "555555",
+        // "email": "li@gmail.com",
+        // "provider": "local",
+        // "confirmed": false,
+        // "blocked": false,
+        // "profile_slug": "lana",
+        // "role": {
+        //     "connect": [{"id": 2}]
+        // },
+        // "name": "Lana",
+        // "surname": "Istwood"
+
+    const res = await fetch(`${BASE_URL}/api/users`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${TOKEN}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    })
+    const result = await res.json();
+
+    if (result.error) {
+        throw new Error(result.error.message);
+    }
+
+    return result;
+}
+// POST request:
+// {
+    
+//     "username": "FionaMay",
+//     "password": "555555",
+//     "email": "fm@gmail.com",
+//     "provider": "local",
+//     "confirmed": false,
+//     "blocked": false,
+//     "profile_slug": "fiona",
+    // "role": {
+    //     "connect": [{"id": 1}]
+    // },
+//     "name": "Fiona",
+//     "surname": "May"
+
+// }
+
+export async function loadUsers(){
+
 }

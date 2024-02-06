@@ -10,20 +10,30 @@ const SignInForm: React.FC<SignInFormProps> = ({ onClose }) => {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
-    const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+    async function handleSignIn(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        const storedUsers = localStorage.getItem("users");
-        const users = storedUsers ? JSON.parse(storedUsers) : [];
-
-        const user = users.find((user: User) => user.username === username && user.password === password);
-
-        if (user) {
-            localStorage.setItem("currentUser", JSON.stringify(user));
-
-            onClose(user);
-        } else {
-            setErrorMessage("No such username or password");
+        try {
+            const identifier = username;
+            const response = await fetch('http://localhost:1337/api/auth/local', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ identifier, password }),
+            });
+            const data = await response.json();
+            const user = data.user;
+            if (!response.ok) {
+                throw new Error('Authentication failed');
+            }
+            if (user) {
+                console.log(user);
+                localStorage.setItem("currentUser", JSON.stringify(user));
+                onClose(user);
+            }
+        } catch (error) {
+            setErrorMessage('Authentication failed. Please check your credentials.');
         }
     };
 
