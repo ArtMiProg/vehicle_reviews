@@ -7,14 +7,14 @@ export const store = configureStore({
     reducer: combineReducers ({
         
         reviews: reviewsSlice.reducer,
-        // review: reviewsSlice.reducer,
+       
     }),
 });
 
 export const actions = {
     
     reviews: reviewsSlice.actions,
-    // review: reviewsSlice.actions,
+   
 };
 
 export type RootState = ReturnType<typeof store.getState>

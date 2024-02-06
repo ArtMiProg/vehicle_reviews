@@ -9,15 +9,17 @@ import { useDispatch } from "react-redux";
 import { loadReviewsActions } from "../../actions/loadings";
 import { useAppDispatch } from "../../hooks/hooks";
 import { actions } from "../../store";
+import { addFault, addReview } from "../../strapi/strapi";
 
 function CreateReview() {
-    const reviewTitle: string = 'create review here';
+    
     const [reviews, setReviews] = useState<Review[]>([]);
     const user: User = JSON.parse(localStorage.getItem("currentUser") || "null");
     const { carId } = useParams();
     const car: Car | undefined = user.cars.find((car) => car.id === carId);
     const [releaseYear, setReleaseYear] = useState<string | number>("")
     const years: number[] = Array.from({ length: new Date().getFullYear() - 1900 }, (_, index) => new Date().getFullYear() - index);
+    const [idsOfFaults, setIdsOfFaults] = useState<string[]>([]);
     useEffect(() => {
         setReleaseYear(new Date().getFullYear());
     }, []);
@@ -51,13 +53,28 @@ function CreateReview() {
         }));
     };
 
-    const handleFormSubmit = (e: React.FormEvent) => {
+    async function handleFormSubmit(e: React.FormEvent) {
         e.preventDefault();
-        const updatedFaults = [...faults, newFault];
-        setFaults(updatedFaults);
-        toggleForm();
-        console.log("Updated Faults:", updatedFaults);
-        localStorage.setItem('faults', JSON.stringify(updatedFaults));
+        // const updatedFaults = [...faults, newFault];
+        // setFaults(updatedFaults);
+
+        // console.log("Updated Faults:", updatedFaults);
+        // localStorage.setItem('faults', JSON.stringify(updatedFaults));
+        const idOfFault = uuidv4();
+        try {
+            toggleForm();
+            await addFault({
+                faultId: idOfFault,
+                shortDescription: newFault.shortDescription,
+                mileage: newFault.mileage,
+                yearOfExploitation: newFault.yearOfExploitation,
+                detailedDescription: newFault.detailedDescription
+            });
+            const updatedFaultIds = [...idsOfFaults, idOfFault];
+            setIdsOfFaults(updatedFaultIds);
+        } catch (error) {
+            console.error('Error creating fault:', error);
+        }
     };
 
     const handleGeneralImpressionSubmit = () => {
@@ -73,15 +90,30 @@ function CreateReview() {
         loadReviewsActions(dispatch, reviews);
     }, [dispatch, reviews]);
 
-    const handleReviewSubmit = () => {
+    async function handleReviewSubmit() {
         const reviewId = uuidv4();
         const carId: string | undefined = car?.id;
-        const newReview = createReview(reviewId, user, carId, releaseYear, faults, generalImpressionAboutCar, 4);
+        const newReview = createReview(reviewId, user.id, carId, releaseYear, faults, generalImpressionAboutCar, 4);
         const updatedReviews = [...reviews, newReview];
         setReviews(updatedReviews);
         //@ts-ignore
-        dispatch(actions.reviews.loadReviews(updatedReviews));
-        localStorage.setItem('reviews', JSON.stringify(reviews));
+        // dispatch(actions.reviews.loadReviews(updatedReviews));
+        // localStorage.setItem('reviews', JSON.stringify(reviews));
+        // navigate("/account");
+        try {
+            await addReview({
+                userId: user.id,
+                reviewId: uuidv4(),
+                carId: carId,
+                releaseYear: releaseYear,
+                faults: ['14', '15'],
+                generalImpression: generalImpressionAboutCar,
+                starRating: 4
+            });
+            console.log(idsOfFaults);
+        } catch (error){
+            console.error('error creating review', error);
+        }
         navigate("/account");
     };
     return (
@@ -190,3 +222,7 @@ function CreateReview() {
     )
 }
 export default CreateReview;
+
+function sendReviewToDb(arg0: { faultId: string; shortDescription: string; mileage: number; yearOfExploitation: number; detailedDescription: string; }) {
+    throw new Error("Function not implemented.");
+}

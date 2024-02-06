@@ -12,9 +12,11 @@ function UserAccount() {
 
   const handleAddCar = (newCar: Car, maker: string, model: string, fuelType: FuelType) => {
     const updatedCars = [...existingCars, newCar];
-    const checkDuplicationUserCar: Car | undefined = userCars.find(car =>
-      newCar.maker === maker && newCar.model === model && newCar.fuelType === fuelType);
-    if (checkDuplicationUserCar) {
+    // const checkDuplicationUserCar: Car | undefined = userCars.find(car =>
+    //   newCar.maker === maker && newCar.model === model && newCar.fuelType === fuelType);
+    //   console.log(checkDuplicationUserCar);
+    const doesCarExist = userCars.some(car => car.maker === maker && car.model === model && car.fuelType === fuelType);
+    if (!doesCarExist) {
       const updatedUserCars = [...userCars, newCar]
       setUserCars(updatedUserCars);
       const updatedUser = { ...user, cars: updatedUserCars };

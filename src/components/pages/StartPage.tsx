@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RegistrationForm from './RegistrationForm';
 import SignInForm from "./SingInForm";
 import { User } from "../AuthContext";
 import { Link } from "react-router-dom";
-import { Review } from "../review/ReviewComponent";
+import { OneReview, Review } from "../review/ReviewComponent";
 import { useAppSelector } from "../../hooks/hooks";
-import  {RootState} from "../../store/index";
-import {ReviewsState} from "../../store/reviewsSlice";
+import { RootState } from "../../store/index";
+import { ReviewsState } from "../../store/reviewsSlice";
+import { loadReviews, StrapiListResponse, StrapiReview} from "../../strapi/strapi";
 
 
 
@@ -66,10 +67,26 @@ function StartPage() {
     { manufacturer: "BMW", model: "520", year: 2020, mileage: 70000 }];
 
     // const allReviews: Review[] = JSON.parse(localStorage.getItem('reviews') || "null");
-    
+
     // @ts-ignore 
-    const  allReviews : Review[] = useAppSelector((state : ReviewsState) => state.reviews.reviews);
-    
+    // const  allReviews : Review[] = useAppSelector((state : ReviewsState) => state.reviews.reviews);
+
+    const [allReviews, setAllReviews] = useState<StrapiListResponse<StrapiReview>>();
+    useEffect(() => {
+        const load = async () => {
+            try {
+                const reviews = await loadReviews();
+                setAllReviews(reviews);
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    console.log(error.message);
+                } else {
+                    throw error;
+                }
+            }
+        }
+        load();
+    }, []);
 
     return (
         <>
@@ -94,9 +111,9 @@ function StartPage() {
 
             {showSignInForm && <SignInForm onClose={(user) => handleSignInClose(user)} />}
 
-            {allReviews.map((review) => (
-                <div key={review.id}>
-                    <p>User: {review.user.name}</p>
+            {allReviews ? allReviews.data.map((review) => (
+                <OneReview key={review.id} review={review} />
+                    /* {<p>User: {review.userId}</p>
                     <p>Car is of {review.releaseYear} release year</p>
                     <p>General Impression: {review.generalImpression}</p>
                     {review.faults.map((fault) => (
@@ -106,9 +123,9 @@ function StartPage() {
                             <p>The car past at the moment about {fault.mileage} km</p>
                             <p>The issue was the next: <br /> {fault.detailedDescription}</p>
                         </div>
-                    ))}
-                </div>
-            ))
+                    ))} }*/
+                
+            )) : "loading"
             }
         </>
     )

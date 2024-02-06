@@ -19,7 +19,7 @@ function CarReviews() {
             {reviews && reviews.length > 0 ? (
                 reviews.map((review) => (
                     <div key={review.id}>
-                        <p>User: {review.user.name}</p>
+                        <p>User: {review.userId}</p>
                         <p>Car is of {review.releaseYear} release year</p>
                         <p>General Impression: {review.generalImpression}</p>
                         {review.faults.map((fault) => (
