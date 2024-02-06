@@ -174,7 +174,7 @@ export async function addUser(
         // "name": "Lana",
         // "surname": "Istwood"
 
-    const res = await fetch(`${BASE_URL}/api/users`, {
+    const res = await fetch(`${BASE_URL}/api/auth/local/register`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${TOKEN}`,

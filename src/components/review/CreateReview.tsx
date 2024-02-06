@@ -106,6 +106,7 @@ function CreateReview() {
                 reviewId: uuidv4(),
                 carId: carId,
                 releaseYear: releaseYear,
+                //TODO
                 faults: ['14', '15'],
                 generalImpression: generalImpressionAboutCar,
                 starRating: 4
