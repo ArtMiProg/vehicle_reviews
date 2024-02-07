@@ -164,7 +164,7 @@ export async function addCar(
         maker: string;
         model: string;
         fuelType: string;
-    }
+    } | undefined
 ): Promise<StrapiListResponse<StrapiCar>> {
     const body = {
         data: {
@@ -198,8 +198,8 @@ export async function loadCarsFromDb(): Promise<StrapiListResponse<StrapiCar>> {
     return data;
 }
 
-export async function loadCarByCarId(carId: string): Promise<StrapiCar> {
-    const result = await fetch(`${BASE_URL}/api/cars?filters[carId][$eq]=${carId}`, {
+export async function loadCarByCarId(stringId: string): Promise<StrapiCar> {
+    const result = await fetch(`${BASE_URL}/api/cars?filters[carId][$eq]=${stringId}`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${TOKEN}`,
@@ -207,7 +207,12 @@ export async function loadCarByCarId(carId: string): Promise<StrapiCar> {
         redirect: "follow"
     })
     const data = await result.json();
-    return data;
+    const extractedData = data.data[0];
+    console.log(extractedData)
+    const {carId, maker, model, fuelType, createdAt, updatedAt, publishedAt} = extractedData.attributes;
+    const {id} = extractedData;
+    const unitedData = {id, carId, maker, model, fuelType, createdAt, updatedAt, publishedAt};
+    return unitedData;
 }
 
 export async function addUser(

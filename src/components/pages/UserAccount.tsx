@@ -12,6 +12,7 @@ function UserAccount() {
   const [userRole, setUserRole] = useState<string>();
   user.role = userRole;
   const [userCars, setUserCars] = useState<StrapiCar[]>([]);
+  const [isAddingCar, setIsAddingCar] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -45,15 +46,25 @@ function UserAccount() {
     load();
   }, []);
 
+  useEffect(() => {
+    if(isAddingCar){      
+      const updatedUser = { ...user, cars: userCars };
+      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+      const idsOfUserCars: number[] = userCars.map(car => car.id);
+      console.log(idsOfUserCars)
+      const addNewCarToDb = async () => {
+        await addCarToUser(user.id, idsOfUserCars);
+        setIsAddingCar(false);
+      }
+      addNewCarToDb();
+    }
+  }, [isAddingCar])
+
   async function handleAddCar(newCar: StrapiCar) {
 
-    const updatedUserCars = [...userCars, newCar];
-    setUserCars(updatedUserCars);
-    const updatedUser = { ...user, cars: updatedUserCars };
-    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-    const idsOfUserCars: number[] = userCars.map(car => car.id);
-    console.log(idsOfUserCars)
-    const addNewCarToDb = await addCarToUser(user.id, idsOfUserCars);
+    setUserCars(prev => [...prev, newCar]);
+    setIsAddingCar(true);
+    
 
   };
 
