@@ -17,12 +17,29 @@ function AddCarForm({ onAddCar }: AddCarFormProps) {
     const [model, setModel] = useState('');
     const [fuelType, setFuelType] = useState<FuelType>(FuelType.Gasoline);
     const [carsInDb, setCarsInDb] = useState<StrapiCar[]>();
-    const [newCar, setNewCar] = useState<StrapiCar>();
+    const [newCar, setNewCar] = useState<StrapiCar | undefined>();
+    const [newCarId, setNewCarId] = useState<string>();
+    
+    
+    useEffect(()=>{async function fetchData() { 
+        const loadedCars = await loadCarsFromDb();
+        setCarsInDb(loadedCars.data); 
+    } fetchData();
+    },[newCar]);
+
+    useEffect(()=>{async function fetchData() { 
+        if(newCarId){
+            const newFilledCar = await loadCarByCarId(newCarId);
+            setNewCar(newFilledCar);
+            if(newFilledCar){
+                onAddCar(newFilledCar);
+            }
+        }  
+    } fetchData();
+    },[newCarId]);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        const loadedCars = await loadCarsFromDb();
-        setCarsInDb(loadedCars.data);
         
         if (carsInDb) {
             const existingCar: StrapiCar | undefined = carsInDb.find((car: StrapiCar) =>
@@ -37,14 +54,14 @@ function AddCarForm({ onAddCar }: AddCarFormProps) {
                     model: model,
                     fuelType: fuelType
                 }
-                try {
-                    await addCar(carObject);
-                } catch (error) {
-                    console.error('error creating car', error);
-                }
-                setNewCar(await loadCarByCarId(idForNewCar));                
-                console.log(newCar)
-                newCar && onAddCar(newCar);
+                try{
+                    const addedCar = await addCar(carObject);
+                    if (addedCar) {
+                        setNewCarId(idForNewCar);
+                    }
+                } catch (error) { 
+                    console.error('error creating car', error); }
+                               
             }
             setMaker('');
             setModel('');
