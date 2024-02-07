@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Maker, Model, loadCars } from '../../api/carsApi';
 import { FuelType } from '../../enums/FuelType';
 import { useLoad } from '../../hooks/useLoad';
 import { Car, createCar } from './CarComponent';
+import { StrapiCar, StrapiListResponse, addCar, loadCarByCarId, loadCarsFromDb } from '../../strapi/strapi';
 
 interface AddCarFormProps {
-    onAddCar: (car: Car, maker: string, model: string, fuelType: FuelType) => void;
+    onAddCar: (newCar: StrapiCar ) => void;
 }
 
 function AddCarForm({ onAddCar }: AddCarFormProps) {
@@ -15,21 +16,39 @@ function AddCarForm({ onAddCar }: AddCarFormProps) {
     const [maker, setMaker] = useState('');
     const [model, setModel] = useState('');
     const [fuelType, setFuelType] = useState<FuelType>(FuelType.Gasoline);
+    const [carsInDb, setCarsInDb] = useState<StrapiCar[]>();
+    const [newCar, setNewCar] = useState<StrapiCar>();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        const existingCars: Car[] = JSON.parse(localStorage.getItem('cars') || "[]");
-        const existingCar: Car | undefined = existingCars.find(car =>
-            car.maker === maker && car.model === model && car.fuelType === fuelType); 
-        if (existingCar) {
-            onAddCar(existingCar, maker, model, fuelType);
-        } else {
-            const carId = uuidv4();
-            const newCar = createCar(carId, maker, model, fuelType);
-            onAddCar(newCar,  maker, model, fuelType);
+        const loadedCars = await loadCarsFromDb();
+        setCarsInDb(loadedCars.data);
+        
+        if (carsInDb) {
+            const existingCar: StrapiCar | undefined = carsInDb.find((car: StrapiCar) =>
+                car.maker === maker && car.model === model && car.fuelType === fuelType);
+            if (existingCar) {
+                onAddCar(existingCar);
+            } else {
+                const idForNewCar = uuidv4();
+                const carObject = {
+                    carId: idForNewCar,
+                    maker: maker,
+                    model: model,
+                    fuelType: fuelType
+                }
+                try {
+                    await addCar(carObject);
+                } catch (error) {
+                    console.error('error creating car', error);
+                }
+                setNewCar(await loadCarByCarId(idForNewCar));                
+                console.log(newCar)
+                newCar && onAddCar(newCar);
+            }
+            setMaker('');
+            setModel('');
         }
-        setMaker('');
-        setModel('');
     };
 
     return (
