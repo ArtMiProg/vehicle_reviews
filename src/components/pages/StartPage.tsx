@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
-import RegistrationForm from './RegistrationForm';
-import SignInForm from "./SingInForm";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { StrapiListResponse, StrapiReview, loadReviews } from "../../strapi/strapi";
 import { User } from "../AuthContext";
-import { Link } from "react-router-dom";
-import { OneReview, Review } from "../review/ReviewComponent";
-import { useAppSelector } from "../../hooks/hooks";
-import { RootState } from "../../store/index";
-import { ReviewsState } from "../../store/reviewsSlice";
-import { loadReviews, StrapiListResponse, StrapiReview} from "../../strapi/strapi";
+import Navbar from "../navbar/Navbar";
+import { OneReview } from "../review/ReviewComponent";
 
 
 
@@ -22,6 +18,7 @@ function StartPage() {
     // npm install --save typescript @types/node @types/react-dam @types/jest
     // d5-=FgDvMFt.bxB
 
+    const navigate = useNavigate();
     const [showRegistration, setShowRegistration] = useState(false);
 
     const [currentUser, setCurrentUser] = useState<User | null>(
@@ -31,6 +28,7 @@ function StartPage() {
 
     const handleSignUpClick = () => {
         setShowRegistration(true);
+        navigate('/signup')
     };
 
     const handleRegistrationClose = () => {
@@ -41,6 +39,7 @@ function StartPage() {
 
     const handleSignInClick = () => {
         setShowSignInForm(true);
+        navigate('/signin')
     };
 
     const handleSignInClose = (loggedInUser: User | null) => {
@@ -90,10 +89,11 @@ function StartPage() {
 
     return (
         <>
+            <Navbar isLogin={!!currentUser} handleLogOut={handleLogOut} />
             {currentUser ? (
                 <div>
                     <p>Welcome, {currentUser.username}! <Link to="/account">Go to account</Link></p>
-                    <button onClick={handleLogOut}>Log Out</button>
+                    {/* <button onClick={handleLogOut}>Log Out</button> */}
                 </div>
             ) : null}
             {greeting}
@@ -105,26 +105,26 @@ function StartPage() {
             </div>
             )}
             </div>
-            <button onClick={handleSignUpClick}>Sign up</button>
+            {/* <button onClick={handleSignUpClick}>Sign up</button>
             {showRegistration && <RegistrationForm onClose={handleRegistrationClose} />}
             <button onClick={handleSignInClick}>Sign In</button>
 
-            {showSignInForm && <SignInForm onClose={(user) => handleSignInClose(user)} />}
+            {showSignInForm && <SignInForm onClose={(user) => handleSignInClose(user)} />} */}
 
             {allReviews ? allReviews.data.map((review) => (
                 <OneReview key={review.id} review={review} />
-                    /* {<p>User: {review.userId}</p>
-                    <p>Car is of {review.releaseYear} release year</p>
-                    <p>General Impression: {review.generalImpression}</p>
-                    {review.faults.map((fault) => (
-                        <div key={fault.id}>
-                            <p>The part that fault: {fault.shortDescription}</p>
-                            <p>I happened on the {fault.yearOfExploitation} year of exploitation</p>
-                            <p>The car past at the moment about {fault.mileage} km</p>
-                            <p>The issue was the next: <br /> {fault.detailedDescription}</p>
-                        </div>
-                    ))} }*/
-                
+                /* {<p>User: {review.userId}</p>
+                <p>Car is of {review.releaseYear} release year</p>
+                <p>General Impression: {review.generalImpression}</p>
+                {review.faults.map((fault) => (
+                    <div key={fault.id}>
+                        <p>The part that fault: {fault.shortDescription}</p>
+                        <p>I happened on the {fault.yearOfExploitation} year of exploitation</p>
+                        <p>The car past at the moment about {fault.mileage} km</p>
+                        <p>The issue was the next: <br /> {fault.detailedDescription}</p>
+                    </div>
+                ))} }*/
+
             )) : "loading"
             }
         </>

@@ -1,11 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { User, UserRole } from "../AuthContext";
-import { Car } from "../car/CarComponent";
+import { StrapiCar, StrapiUser, addCarToUser, loadUserCars, loadUserRole } from "../../strapi/strapi";
 import AddCarForm from "../car/AddCarForm";
-import { FuelType } from "../../enums/FuelType";
-import { StrapiCar, StrapiUser, addCar, addCarToUser, loadUserCars, loadUserRole } from "../../strapi/strapi";
-import { v4 as uuidv4 } from 'uuid';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Drawer,
+  List,
+  ListItem, ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography
+} from "@mui/material";
+import CarList from "../carList/CarList";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+
+type MenuItems = 'Account' | 'Add Car';
 
 function UserAccount() {
   const user: StrapiUser = JSON.parse(localStorage.getItem("currentUser") || "null");
@@ -13,6 +26,13 @@ function UserAccount() {
   user.role = userRole;
   const [userCars, setUserCars] = useState<StrapiCar[]>([]);
   const [isAddingCar, setIsAddingCar] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<MenuItems>('Account');
+
+  const handleMenuItemClick = (item: MenuItems) => {
+      setSelectedItem(item);
+  };
+
+  console.log(selectedItem)
 
   useEffect(() => {
     const load = async () => {
@@ -76,32 +96,102 @@ function UserAccount() {
 
 
   return (
-    <div>
-      <h2>User Account</h2>
-      <p>Name: {user.name}</p>
-      <p>Surname: {user.surname}</p>
-      <p>Username: {user.username}</p>
-      <p>You role is: {user.role}</p>
+    <Box sx={{ display: 'flex' }}>
+        <Drawer
+            sx={{
+              width: 240,
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
+                width: 240,
+                boxSizing: 'border-box',
+              },
+            }}
+            variant="permanent"
+            anchor="left"
+        >
+            <List>
+                <ListItemButton  onClick={() => handleMenuItemClick('Account')}>
+                    <ListItemIcon >
+                        <AccountCircleIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={`${user.name}`} />
+                </ListItemButton>
+                <ListItemButton onClick={() => handleMenuItemClick('Add Car')}>
+                    <ListItemIcon>
+                        <DirectionsCarIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Add Car" />
+                </ListItemButton>
+            </List>
+        </Drawer>
+        <Box
+            component="main"
+            sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+            >
+            <Typography paragraph>
+                User Account
+            </Typography>
+            <Card sx={{ maxWidth: 345,  }}>
+                <CardContent>
+                    <Typography variant="h5" component="div">
+                        {user.name} {user.surname}
+                    </Typography>
+                    <Typography variant="body2">
+                        Username: {user.username}
+                    </Typography>
+                    <Typography variant="body2">
+                        Role: {user.role}
+                    </Typography>
+                    {/* {user.role === UserRole.ADMIN && (
+                        <Button variant="contained" color="primary" href="/admin" style={{ marginTop: '10px' }}>
+                            Admin Panel
+                        </Button>
+                    )} */}
+                    {/* <Typography variant="h6">
+                        Cars Count: {user.cars.length}
+                    </Typography> */}
+
+                </CardContent>
+                <CarList cars={user.cars} /*onDeleteCar={onDeleteCar}*/ onDeleteCar={function (carId: string): void {
+            throw new Error("Function not implemented.");
+          } } /*onDeleteCar={onDeleteCar}*/ />
+            </Card>
+            <Link to="/">
+                <Button variant="contained" color="secondary" style={{ marginTop:"10px" }} >
+                     Return to Start Page
+                </Button>
+            </Link>
+            <AddCarForm onAddCar={handleAddCar} />
+        </Box>
+
+      </Box>
+  )
+    // <div>
+    //   <h2>User Account</h2>
+    //   <p>Name: {user.name}</p>
+    //   <p>Surname: {user.surname}</p>
+    //   <p>Username: {user.username}</p>
+    //   <p>You role is: {user.role}</p>
       {/*user.role === UserRole.ADMIN && (
         <p>
           <Link to="/admin">Admin Panel</Link>
         </p>
       )} */}
-      <p>Your Cars:</p>
-      <ul>
-        {userCars && userCars.map((car) => (
-          <li key={car.id}>
-            {car.maker} {car.model} {car.fuelType} - {' '}
-            <Link to={`/addReview/${car.id}`}>Leave a Review</Link><br />
-            <Link to={`/carReviews/${car.id}`}>View Reviews for this Car</Link><br />
-            {/* <button onClick={() => onDeleteCar(car.id)}>Delete Car</button>  */}
-          </li>
-        ))}
-      </ul>
-      <AddCarForm onAddCar={handleAddCar} />
-      <Link to="/">Return to Start Page</Link>
-    </div>
-  );
+  //     <p>Your Cars:</p>
+  //     <ul>
+  //       {userCars && userCars.map((car) => (
+  //         <li key={car.id}>
+  //           {car.maker} {car.model} {car.fuelType} - {' '}
+  //           <Link to={`/addReview/${car.id}`}>Leave a Review</Link><br />
+  //           <Link to={`/carReviews/${car.id}`}>View Reviews for this Car</Link><br />
+  //           {/* <button onClick={() => onDeleteCar(car.id)}>Delete Car</button>  */}
+  //         </li>
+  //       ))}
+  //     </ul>
+  //     <AddCarForm onAddCar={handleAddCar} />
+  //     <Link to="/">Return to Start Page</Link>
+  //   </div>
+  // );
 }
 
 export default UserAccount;

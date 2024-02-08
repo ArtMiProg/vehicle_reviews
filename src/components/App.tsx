@@ -13,6 +13,8 @@ import AdminPanel from "./admin/AdminPanel";
 import CarReviews from './car/CarReviews';
 import { Provider } from 'react-redux';
 import { store } from '../store';
+import RegistrationForm from './pages/RegistrationForm';
+import SignInForm from './pages/SingInForm';
 
 function App() {
 
@@ -29,8 +31,10 @@ function App() {
                 <Route path="/addReview/:carId" element={<CreateReview />} />
                 <Route path="/carReviews/:carId" element={<CarReviews />} />
                 <Route path="/account" element={<UserAccount />} />
-                <Route path="/admin" element={<AdminPanel />}
-                />
+                <Route path="/admin" element={<AdminPanel />} />
+                 <Route path="/signup" element={<RegistrationForm />} />
+                 <Route path="/signin" element={<SignInForm />} />
+                
               </Routes>
             </Content>
           </BrowserRouter>

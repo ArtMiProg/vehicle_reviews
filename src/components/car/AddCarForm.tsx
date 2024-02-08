@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Maker, Model, loadCars } from '../../api/carsApi';
+import { loadCars } from '../../api/carsApi';
 import { FuelType } from '../../enums/FuelType';
 import { useLoad } from '../../hooks/useLoad';
-import { Car, createCar } from './CarComponent';
-import { StrapiCar, StrapiListResponse, addCar, loadCarByCarId, loadCarsFromDb } from '../../strapi/strapi';
+import { StrapiCar, addCar, loadCarByCarId, loadCarsFromDb } from '../../strapi/strapi';
 
 interface AddCarFormProps {
     onAddCar: (newCar: StrapiCar ) => void;

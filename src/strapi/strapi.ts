@@ -1,4 +1,3 @@
-import { Fault } from "../components/fault/FaultComponent";
 
 const BASE_URL = process.env.REACT_APP_STRAPI_BASE_URL;
 const TOKEN = process.env.REACT_APP_STRAPI_TOKEN;
