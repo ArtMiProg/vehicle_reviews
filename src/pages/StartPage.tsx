@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { StrapiListResponse, loadCarsFromDb } from "../../strapi/strapi";
+import { StrapiListResponse} from "../strapi/strapi";
+import { loadCarsFromDb } from "../strapi/strapiCar";
 import { User } from "../AuthContext";
-import { OneCar } from "../car/CarComponent";
-import Navbar from "../navbar/Navbar";
+import { OneCar } from "../components/car/CarComponent";
+import Navbar from "../components/navbar/Navbar";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";

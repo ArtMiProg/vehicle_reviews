@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { loadCars } from '../../api/carsApi';
 import { FuelType } from '../../enums/FuelType';
 import { useLoad } from '../../hooks/useLoad';
-import { StrapiCar, addCar, loadCarByCarId, loadCarsFromDb } from '../../strapi/strapi';
+import { StrapiCar, addCar, loadCarByCarId, loadCarsFromDb } from '../../strapi/strapiCar';
 
 interface AddCarFormProps {
     onAddCar: (newCar: StrapiCar ) => void;

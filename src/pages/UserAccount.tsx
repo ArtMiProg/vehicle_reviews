@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { StrapiCar, StrapiUser, addCarToUser, deleteCar, loadUserCars, loadUserRole } from "../../strapi/strapi";
-import AddCarForm from "../car/AddCarForm";
+import { StrapiUser, addCarToUser, loadUserCars, loadUserRole } from "../strapi/strapiUser";
+import { StrapiCar, deleteCar } from "../strapi/strapiCar";
+import AddCarForm from "../components/car/AddCarForm";
 import {
   Box,
   Button,
@@ -14,7 +15,7 @@ import {
   ListItemText,
   Typography
 } from "@mui/material";
-import CarList from "../carList/CarList";
+import CarList from "../components/carList/CarList";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 

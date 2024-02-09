@@ -1,6 +1,6 @@
 import { Car } from '../car/CarComponent';
 import { Review } from '../review/ReviewComponent';
-import {User, UserRole} from '../AuthContext';
+import {User, UserRole} from '../../AuthContext';
 
 export function createUser(id: string, username: string, password: string, name: string, surname: string, role: UserRole): User {
   return {

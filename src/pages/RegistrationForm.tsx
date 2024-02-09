@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { UserRole } from '../AuthContext';
-import { createUser } from '../user/UserComponent';
+import { createUser } from '../components/user/UserComponent';
 import { v4 as uuidv4 } from 'uuid';
 import { TextField, Button, Box, Container, Typography } from '@mui/material';
-import { addUser } from '../../strapi/strapi';
-import CustomAlert from '../alert/CustomAlert';
+import { addUser } from '../strapi/strapiUser';
+import CustomAlert from '../components/alert/CustomAlert';
 
 
 export interface AlertState {

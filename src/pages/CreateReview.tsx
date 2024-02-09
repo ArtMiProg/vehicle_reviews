@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
-import { StrapiReview, StrapiUser, addReview, addReviewToCar, loadCarByCarId, loadLastReview } from "../../strapi/strapi";
-import CreateFault from "../fault/CreateFault";
-import { Fault } from "../fault/FaultComponent";
+import { StrapiReview, addReview, addReviewToCar, loadLastReview } from "../strapi/strapiReview";
+import { StrapiUser } from "../strapi/strapiUser";
+import { loadCarByCarId } from "../strapi/strapiCar";
+import CreateFault from "../components/fault/CreateFault";
+import { Fault } from "../components/fault/FaultComponent";
 
 function CreateReview() {
     let { state } = useLocation();

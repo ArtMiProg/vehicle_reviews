@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, IconButton, Button, Menu, MenuItem } from 
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { User } from '../AuthContext';
+import { User } from '../../AuthContext';
 
 interface NavbarProps {
     isLogin: boolean;

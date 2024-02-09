@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { User } from "../AuthContext";
+import { User } from "../../AuthContext";
 import { Link } from "react-router-dom";
 
 function AdminPanel() {

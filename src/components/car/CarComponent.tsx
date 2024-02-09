@@ -9,7 +9,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
-import { Item } from '../pages/StartPage';
+import { Item } from '../../pages/StartPage';
 
 interface CarProps {
   car: StrapiCarResponse;

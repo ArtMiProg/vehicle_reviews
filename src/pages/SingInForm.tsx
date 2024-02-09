@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { User } from "../AuthContext"
 import { TextField, Button, Box, Container, Typography } from '@mui/material';
 import { AlertState } from "./RegistrationForm";
-import CustomAlert from "../alert/CustomAlert";
+import CustomAlert from "../components/alert/CustomAlert";
 
 
 const SignInForm: React.FC = () => {

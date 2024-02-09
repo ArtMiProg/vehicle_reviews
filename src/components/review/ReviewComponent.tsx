@@ -1,6 +1,6 @@
 import Accordion from '@mui/material/Accordion';
 import { StrapiReview } from '../../strapi/strapi';
-import { User } from '../AuthContext';
+import { User } from '../../AuthContext';
 
 import { Fault, OneFault } from '../fault/FaultComponent';
 import AccordionSummary from '@mui/material/AccordionSummary';

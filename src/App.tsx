@@ -6,13 +6,13 @@ import {
 import StartPage from './pages/StartPage';
 import { Content } from './Content';
 import UserAccount from './pages/UserAccount';
-import CreateReview from './review/CreateReview';
+import CreateReview from './pages/CreateReview';
 import React, { useState } from 'react';
 import { AuthProvider, User, UserRole } from './AuthContext';
-import AdminPanel from "./admin/AdminPanel";
-import CarReviews from './car/CarReviews';
+import AdminPanel from "./components/admin/AdminPanel";
+import CarReviews from './pages/CarReviews';
 import { Provider } from 'react-redux';
-import { store } from '../store';
+import { store } from './store';
 import RegistrationForm from './pages/RegistrationForm';
 import SignInForm from './pages/SingInForm';
 

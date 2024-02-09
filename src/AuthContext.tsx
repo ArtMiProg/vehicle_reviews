@@ -1,6 +1,6 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
-import {Car} from './car/CarComponent';
-import { Review } from './review/ReviewComponent';
+import {Car} from './components/car/CarComponent';
+import { Review } from './components/review/ReviewComponent';
 import { v4 as uuidv4 } from 'uuid';
 
 export enum UserRole {

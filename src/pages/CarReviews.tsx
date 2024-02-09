@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { Review } from "../review/ReviewComponent";
 import { User } from "../AuthContext";
-import { Car } from "./CarComponent";
-import { StrapiCar, StrapiReview, loadCarByCarId } from "../../strapi/strapi";
+import { StrapiCar, loadCarByCarId } from "../strapi/strapiCar";
+import { StrapiReview } from "../strapi/strapiReview";
 
 function CarReviews() {
     const user: User = JSON.parse(localStorage.getItem("currentUser") || "null");
