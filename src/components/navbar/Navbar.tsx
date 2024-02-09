@@ -1,15 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Button, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { User } from '../AuthContext';
 
 interface NavbarProps {
     isLogin: boolean;
     handleLogOut: () => void;
 
 }
-const Navbar:React.FC<NavbarProps> = ({isLogin, handleLogOut}) => {
+const Navbar: React.FC<NavbarProps> = ({ isLogin, handleLogOut }) => {
+
+    const [currentUser, setCurrentUser] = useState<User | null>(
+        JSON.parse(localStorage.getItem("currentUser") || "null")
+    );
 
     const linkStyle = {
         textDecoration: 'none',
@@ -35,8 +40,8 @@ const Navbar:React.FC<NavbarProps> = ({isLogin, handleLogOut}) => {
                 </IconButton>
 
                 <Typography variant="h6" style={{ flexGrow: 1 }}>
-                    <Link to ="/" style={linkStyle}>
-                    Vehicle Management System
+                    <Link to="/" style={linkStyle}>
+                        Vehicle Reviews
                     </Link>
                 </Typography>
 
@@ -67,6 +72,15 @@ const Navbar:React.FC<NavbarProps> = ({isLogin, handleLogOut}) => {
                             </Link>
                             <MenuItem onClick={handleLogOut}>Log out</MenuItem>
                         </Menu>
+                        {currentUser ? (
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' },  maxWidth: '18%' }}
+                        >
+                            WELCOME, {currentUser.username}!
+                        </Typography>
+                        ) : null}
                     </>
 
                 ) : (

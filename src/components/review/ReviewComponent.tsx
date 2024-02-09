@@ -1,7 +1,12 @@
+import Accordion from '@mui/material/Accordion';
 import { StrapiReview } from '../../strapi/strapi';
 import { User } from '../AuthContext';
 
 import { Fault, OneFault } from '../fault/FaultComponent';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Typography from '@mui/material/Typography';
+import { AccordionDetails } from '@mui/material';
 
 interface ReviewProps {
   review: StrapiReview;
@@ -22,34 +27,39 @@ export const OneReview: React.FC<ReviewProps> = (props) => {
   } = props.review;
 
   return <div>
-    <div>
-      Review Nr {reviewId}
-    </div>
-    <div>
-      Created by user Nr {userId}
-    </div>
-    <div>
-      For the car Nr{carId}
-    </div>
-    <div>
-      of {releaseYear} release year
-    </div>
-    <div>
-      {faults && faults.data.length ? <>
+    <Accordion>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls="panel1-content"
+        id="panel1-header"
+      >
+        <Typography>
+          Review Nr {reviewId}<br />
+          Created by user Nr {userId}
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Typography>
+          The car is of {releaseYear} release year
+        </Typography>
+        <Typography>
+          {faults && faults.data.length ? <>
+            <div>
+              {faults.data.map(fault => (
+                <OneFault key={fault.id} fault={fault} />
+              ))}
+            </div>
+          </> : "no faults"
+          }
+        </Typography>
         <div>
-          {faults.data.map(fault => (
-            <OneFault key={fault.id} fault={fault}/>
-          ))}
+          General impression: {generalImpression}
         </div>
-      </> : "no faults"
-      }
-    </div>
-    <div>
-      General impression: {generalImpression}
-    </div>
-    <div>
-      My evaluation: {starRating}
-    </div>
+        <div>
+          My evaluation: {starRating}
+        </div>
+      </AccordionDetails>
+    </Accordion>
   </div>
 }
 

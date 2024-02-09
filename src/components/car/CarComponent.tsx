@@ -1,6 +1,15 @@
+import Accordion from '@mui/material/Accordion';
 import { FuelType } from '../../enums/FuelType';
 import { StrapiCar, StrapiCarResponse } from '../../strapi/strapi';
 import { OneReview, Review } from '../review/ReviewComponent';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Typography from '@mui/material/Typography';
+import { Grid } from '@mui/material';
+import { Item } from '../pages/StartPage';
 
 interface CarProps {
   car: StrapiCarResponse;
@@ -10,41 +19,40 @@ export const OneCar: React.FC<CarProps> = (props) => {
   const {
     id,
     attributes: {
-    carId,
-    maker,
-    model,
-    fuelType,
-    reviews,
+      carId,
+      maker,
+      model,
+      fuelType,
+      reviews,
     },
   } = props.car;
 
   return <div>
-    <div>
-      Car Nr {id}
-    </div>
-    <div>
-      Internal identifier {carId}
-    </div>
-    <div>
-     Maker {maker} 
-    </div>
-    <div>
-     Model {model} 
-    </div>
-    <div>
-     FuelType {fuelType} 
-    </div>
-    <div>
-      {reviews && reviews.data.length ? <>
-        <div>
-          {reviews.data.map(review => (
-            <OneReview key={review.id} review={review}/>
-          ))}
-        </div>
-      </> : "no reviews"
-      }
-    </div>
-    </div>
+    <Accordion>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls="panel1-content"
+        id="panel1-header"
+      >
+        <Typography>
+          {maker} {model} {fuelType}
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        {reviews && reviews.data.length ?
+          <>
+            {reviews.data.map(review => (
+              <Grid item xs={12}>
+                <Item>
+                  <OneReview key={review.id} review={review} />
+                </Item>
+              </Grid>
+            ))}
+          </> : <Typography>There is no reviews for this car yet</Typography>
+        }
+      </AccordionDetails>
+    </Accordion>
+  </div>
 }
 
 export interface Car {

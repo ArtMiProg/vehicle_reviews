@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { StrapiListResponse, StrapiReview, loadCarsFromDb, loadReviews } from "../../strapi/strapi";
+import { StrapiListResponse, loadCarsFromDb } from "../../strapi/strapi";
 import { User } from "../AuthContext";
-import Navbar from "../navbar/Navbar";
-import { OneReview } from "../review/ReviewComponent";
 import { OneCar } from "../car/CarComponent";
+import Navbar from "../navbar/Navbar";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+import Card from "@mui/material/Card";
+import { CardContent, Typography } from "@mui/material";
 
-
+export const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+}));
 
 function StartPage() {
 
@@ -54,18 +65,6 @@ function StartPage() {
         setCurrentUser(null);
     };
 
-
-    const greeting = (
-        <>
-            <h1>CAR REVIEWS</h1>
-            <h2>Find out the reliability of the car</h2>
-            <h3>Do you already have a car?<br></br>
-                Tell others about it!</h3>
-        </>)
-
-    const autosExample = [{ manufacturer: "Audi", model: "A4", year: 2015, mileage: 150000 },
-    { manufacturer: "BMW", model: "520", year: 2020, mileage: 70000 }];
-
     // const allReviews: Review[] = JSON.parse(localStorage.getItem('reviews') || "null");
 
     // @ts-ignore 
@@ -91,28 +90,40 @@ function StartPage() {
     return (
         <>
             <Navbar isLogin={!!currentUser} handleLogOut={handleLogOut} />
-            {currentUser ? (
-                <div>
-                    <p>Welcome, {currentUser.username}! <Link to="/account">Go to account</Link></p>
-                    {/* <button onClick={handleLogOut}>Log Out</button> */}
-                </div>
-            ) : null}
-            {greeting}
-            <div>{autosExample.map(auto => <div>
-                manufacturer: {auto.manufacturer},
-                model: {auto.model},
-                year: {auto.year},
-                mileage: {auto.mileage}.
-            </div>
-            )}
-            </div>
-          
-            {allCars ? allCars.data.map((car) => (
-                <OneCar key={car.id} car={car} />
-              
+            <Card sx={{ minWidth: '95%' }}>
+                <CardContent>
+                    <Typography
+                        gutterBottom
+                        variant="h1"
+                        component="div"
+                        fontWeight='bold'
+                    >
+                        CAR REVIEWS
+                    </Typography>
+                    <Typography variant="h3" color="text.secondary">
+                        Find out the car's reliability
+                    </Typography>
+                    <Typography variant="h3" color="text.secondary">
+                        Already have a car?
+                    </Typography>
+                    <Typography variant="h3" color="text.secondary">
+                        Tell others about it!
+                    </Typography>
+                </CardContent>
+            </Card>
+            <Box sx={{ flexGrow: 1 }}>
+                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                    {allCars ? allCars.data.map((car) => (
+                        <Grid item xs={6}>
+                            <Item>
+                                <OneCar key={car.id} car={car} />
+                            </Item>
+                        </Grid>
 
-            )) : "loading"
-            }
+                    )) : "loading"
+                    }
+                </Grid>
+            </Box>
         </>
     )
 }
