@@ -21,7 +21,7 @@ const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: string) => voi
                         primary={`${car.maker} ${car.model} ${car.fuelType}`}
                     />
                     
-                    <Link to={`/viewReviews/${car.id}`}>
+                    <Link to={`/carReviews/${car.id}`} state={car}>
                         <Tooltip title="View a Review">
                             <IconButton aria-label="view review">
                                 <VisibilityIcon />
