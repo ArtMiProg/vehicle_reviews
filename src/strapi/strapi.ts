@@ -5,7 +5,7 @@ const TOKEN = process.env.REACT_APP_STRAPI_TOKEN;
 export interface StrapiFault {
     id: number;
     attributes: {
-        createdAt: string; // date ISO
+        createdAt: string;
         updatedAt: string; // date ISO
         publishedAt: string; // date ISO
         faultId: string;
@@ -17,6 +17,7 @@ export interface StrapiFault {
 }
 
 export interface StrapiReview {
+    reviewId: any;
     id: number;
     attributes: {
         createdAt: string | null;
@@ -36,6 +37,7 @@ export interface StrapiReview {
 
 export interface StrapiUser {
     id: number;
+    userId: string;
     username: string;
     password: string;
     email: string;
@@ -60,6 +62,21 @@ export interface StrapiCar {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
+    reviews: StrapiReview[];
+}
+
+export interface StrapiCarResponse {
+    id: number;
+    attributes: {
+        carId: string;
+        maker: string;
+        model: string;
+        fuelType: string;
+        createdAt: string;
+        updatedAt: string;
+        publishedAt: string;
+        reviews: StrapiReview[];
+    }
 }
 
 export interface StrapiMetaPagination {
@@ -141,7 +158,9 @@ export async function addReview(
         data: {
             ...data,
         }
+
     };
+    console.log(data);
     const res = await fetch(`${BASE_URL}/api/reviews`, {
         method: 'POST',
         headers: {
@@ -151,6 +170,25 @@ export async function addReview(
         body: JSON.stringify(body),
     })
     const result = await res.json();
+    if (result.error) {
+        throw new Error(result.error.message);
+    }
+    return result;
+}
+
+export async function addReviewToCar(carId: number, idsOfCarReviews: number[]): Promise<StrapiListResponse<StrapiReview>> {
+    const res = await fetch(`${BASE_URL}/api/cars/${carId}`, {
+        method: 'PUT',
+        headers: {
+            Authorization: `Bearer ${TOKEN}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: { reviews: idsOfCarReviews } }),
+        // body: JSON.stringify({cars: carIds.map(id => ({ id })) }),
+    })
+    console.log(res)
+    const result = await res.json();
+    console.log(result);
     if (result.error) {
         throw new Error(result.error.message);
     }
@@ -186,7 +224,19 @@ export async function addCar(
 }
 
 export async function loadCarsFromDb(): Promise<StrapiListResponse<StrapiCar>> {
-    const result = await fetch(`${BASE_URL}/api/cars`, {
+    const result = await fetch(`${BASE_URL}/api/cars?reviews`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${TOKEN}`,
+        },
+        redirect: "follow"
+    })
+    const data = await result.json();
+    return data;
+}
+
+export async function loadCarById(id: string): Promise<StrapiCar> {
+    const result = await fetch(`${BASE_URL}/api/cars/${id}?populate=reviews`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${TOKEN}`,
@@ -208,9 +258,9 @@ export async function loadCarByCarId(stringId: string): Promise<StrapiCar> {
     const data = await result.json();
     const extractedData = data.data[0];
     console.log(extractedData)
-    const {carId, maker, model, fuelType, createdAt, updatedAt, publishedAt} = extractedData.attributes;
-    const {id} = extractedData;
-    const unitedData = {id, carId, maker, model, fuelType, createdAt, updatedAt, publishedAt};
+    const { carId, maker, model, fuelType, createdAt, updatedAt, publishedAt, reviews } = extractedData.attributes;
+    const { id } = extractedData;
+    const unitedData = { id, carId, maker, model, fuelType, createdAt, updatedAt, publishedAt, reviews };
     return unitedData;
 }
 
@@ -312,7 +362,7 @@ export async function addCarToUser(userId: number, carIds: number[]): Promise<St
                 Authorization: `Bearer ${TOKEN}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({cars: carIds.map(id => ({ id })) }),
+            body: JSON.stringify({ cars: carIds.map(id => ({ id })) }),
         });
         const result = await response.json();
         console.log(result)

@@ -85,7 +85,6 @@ function UserAccount() {
     setUserCars(prev => [...prev, newCar]);
     setIsAddingCar(true);
     
-
   };
 
   // const onDeleteCar = (carId: string) => {

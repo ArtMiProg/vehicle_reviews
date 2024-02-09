@@ -32,9 +32,8 @@ function App() {
                 <Route path="/carReviews/:carId" element={<CarReviews />} />
                 <Route path="/account" element={<UserAccount />} />
                 <Route path="/admin" element={<AdminPanel />} />
-                 <Route path="/signup" element={<RegistrationForm />} />
-                 <Route path="/signin" element={<SignInForm />} />
-                
+                <Route path="/signup" element={<RegistrationForm />} />
+                <Route path="/signin" element={<SignInForm />} />
               </Routes>
             </Content>
           </BrowserRouter>

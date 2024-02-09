@@ -1,6 +1,51 @@
 import { FuelType } from '../../enums/FuelType';
-import { Review } from '../review/ReviewComponent';
+import { StrapiCar, StrapiCarResponse } from '../../strapi/strapi';
+import { OneReview, Review } from '../review/ReviewComponent';
 
+interface CarProps {
+  car: StrapiCarResponse;
+}
+
+export const OneCar: React.FC<CarProps> = (props) => {
+  const {
+    id,
+    attributes: {
+    carId,
+    maker,
+    model,
+    fuelType,
+    reviews,
+    },
+  } = props.car;
+
+  return <div>
+    <div>
+      Car Nr {id}
+    </div>
+    <div>
+      Internal identifier {carId}
+    </div>
+    <div>
+     Maker {maker} 
+    </div>
+    <div>
+     Model {model} 
+    </div>
+    <div>
+     FuelType {fuelType} 
+    </div>
+    <div>
+      {reviews && reviews.length ? <>
+        <div>
+          {reviews.map(review => (
+            <OneReview key={review.id} review={review}/>
+          ))}
+        </div>
+      </> : "no reviews"
+      }
+    </div>
+    </div>
+}
 
 export interface Car {
   id: string;

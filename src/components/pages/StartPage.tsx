@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { StrapiListResponse, StrapiReview, loadReviews } from "../../strapi/strapi";
+import { StrapiListResponse, StrapiReview, loadCarsFromDb, loadReviews } from "../../strapi/strapi";
 import { User } from "../AuthContext";
 import Navbar from "../navbar/Navbar";
 import { OneReview } from "../review/ReviewComponent";
+import { OneCar } from "../car/CarComponent";
 
 
 
@@ -70,12 +71,12 @@ function StartPage() {
     // @ts-ignore 
     // const  allReviews : Review[] = useAppSelector((state : ReviewsState) => state.reviews.reviews);
 
-    const [allReviews, setAllReviews] = useState<StrapiListResponse<StrapiReview>>();
+    const [allCars, setAllCars] = useState<StrapiListResponse<StrapiCar>>();
     useEffect(() => {
         const load = async () => {
             try {
-                const reviews = await loadReviews();
-                setAllReviews(reviews);
+                const cars = await loadCarsFromDb();
+                setAllCars(cars);
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     console.log(error.message);
@@ -111,8 +112,8 @@ function StartPage() {
 
             {showSignInForm && <SignInForm onClose={(user) => handleSignInClose(user)} />} */}
 
-            {allReviews ? allReviews.data.map((review) => (
-                <OneReview key={review.id} review={review} />
+            {allCars ? allCars.data.map((car) => (
+                <OneCar key={car.id} car={car} />
                 /* {<p>User: {review.userId}</p>
                 <p>Car is of {review.releaseYear} release year</p>
                 <p>General Impression: {review.generalImpression}</p>

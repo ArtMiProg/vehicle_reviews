@@ -1,6 +1,6 @@
 import { StrapiReview } from '../../strapi/strapi';
 import { User } from '../AuthContext';
-import { Car } from '../car/CarComponent';
+
 import { Fault, OneFault } from '../fault/FaultComponent';
 
 interface ReviewProps {

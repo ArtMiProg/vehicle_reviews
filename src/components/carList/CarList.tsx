@@ -1,11 +1,9 @@
-import React from 'react';
-import { List, ListItem, ListItemText, Button, IconButton, Typography, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-
-import { Car } from '../car/CarComponent';
-import {Link} from "react-router-dom";
+import { IconButton, List, ListItem, ListItemText, Tooltip } from '@mui/material';
+import React from 'react';
+import { Link } from "react-router-dom";
 import { StrapiCar } from '../../strapi/strapi';
 
 const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: string) => void }> = ({ cars, onDeleteCar }) => {
@@ -16,7 +14,7 @@ const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: string) => voi
     };
 
     return (
-        <List  sx={{ width: '100%', maxWidth: 600 }}>
+        <List sx={{ width: '100%', maxWidth: 600 }}>
             {cars.map((car) => (
                 <ListItem key={car.id}>
                     <ListItemText
@@ -35,7 +33,7 @@ const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: string) => voi
                             </IconButton>
                         </Tooltip>
                     </Link>
-                    <Link to={`/addReview/${car.id}`}>
+                    <Link to={`/addReview/${car.id}`} state={car}>
                         <Tooltip title="Add a Review">
                             <IconButton aria-label="add review">
                                 <EditIcon />
@@ -54,5 +52,5 @@ const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: string) => voi
     );
 }
 // <Link to={`/addReview/${car.id}`}>Leave a Review</Link><br />*/}
-{/*      <Link to={`/carReviews/${car.id}`}>View Reviews for this Car</Link><br />*/}
+{/*      <Link to={`/carReviews/${car.id}`}>View Reviews for this Car</Link><br />*/ }
 export default CarList;
