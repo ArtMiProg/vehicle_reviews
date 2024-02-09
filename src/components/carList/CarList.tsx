@@ -6,7 +6,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { StrapiCar, StrapiCarResponse } from '../../strapi/strapi';
 
-const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: string) => void }> = ({ cars, onDeleteCar }) => {
+const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: number) => void }> = ({ cars, onDeleteCar }) => {
 
     const linkStyle = {
         textDecoration: 'none',
@@ -36,7 +36,7 @@ const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: string) => voi
                         </Tooltip>
                     </Link>
                     <Tooltip title={"Delete car"}>
-                        <IconButton aria-label="delete" onClick={() => onDeleteCar(car.carId)}>
+                        <IconButton aria-label="delete" onClick={() => onDeleteCar(car.id)}>
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>

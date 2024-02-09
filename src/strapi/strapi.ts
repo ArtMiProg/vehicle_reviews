@@ -298,6 +298,21 @@ export async function loadCarByCarId(stringId: string): Promise<StrapiCar> {
     return unitedData;
 }
 
+export async function deleteCar(id: number): Promise<void>{
+    const result = await fetch(`${BASE_URL}/api/cars/${id}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${TOKEN}`,
+        },
+        redirect: "follow"
+    })
+    const response = await result.json();
+    if (!result.ok) {
+        const errorMessage = await result.text(); 
+        throw new Error(`Failed to delete car: ${errorMessage}`);
+    }
+}
+
 export async function addUser(
     data: {
         username: string;

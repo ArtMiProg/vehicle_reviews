@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { StrapiCar, StrapiUser, addCarToUser, loadUserCars, loadUserRole } from "../../strapi/strapi";
+import { StrapiCar, StrapiUser, addCarToUser, deleteCar, loadUserCars, loadUserRole } from "../../strapi/strapi";
 import AddCarForm from "../car/AddCarForm";
 import {
   Box,
@@ -87,6 +87,20 @@ function UserAccount() {
     
   };
 
+  const onDeleteCar = async (carId: number) => {
+    try {
+      await deleteCar(carId);
+      setUserCars(prevUserCars => prevUserCars.filter(car => car.id !== carId));
+      
+      const updatedUser = { ...user, cars: userCars.filter(car => car.id !== carId) };
+      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+      
+      console.log(`Car with ID ${carId} deleted successfully.`);
+  } catch (error: any) {
+      console.error('Error deleting car:', error.message);
+  }
+  }
+
   // const onDeleteCar = (carId: string) => {
   //   const updatedCars = user.cars.filter((car) => car.id !== carId);
   //   setUserCars(updatedCars);
@@ -151,9 +165,7 @@ function UserAccount() {
                     </Typography> */}
 
                 </CardContent>
-                <CarList cars={userCars} /*onDeleteCar={onDeleteCar}*/ onDeleteCar={function (carId: string): void {
-            throw new Error("Function not implemented.");
-          } } /*onDeleteCar={onDeleteCar}*/ />
+                <CarList cars={userCars} onDeleteCar={onDeleteCar}/>
             </Card>
             <Link to="/">
                 <Button variant="contained" color="secondary" style={{ marginTop:"10px" }} >
