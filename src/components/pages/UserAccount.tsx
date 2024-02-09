@@ -151,7 +151,7 @@ function UserAccount() {
                     </Typography> */}
 
                 </CardContent>
-                <CarList cars={user.cars} /*onDeleteCar={onDeleteCar}*/ onDeleteCar={function (carId: string): void {
+                <CarList cars={userCars} /*onDeleteCar={onDeleteCar}*/ onDeleteCar={function (carId: string): void {
             throw new Error("Function not implemented.");
           } } /*onDeleteCar={onDeleteCar}*/ />
             </Card>
@@ -165,32 +165,6 @@ function UserAccount() {
 
       </Box>
   )
-    // <div>
-    //   <h2>User Account</h2>
-    //   <p>Name: {user.name}</p>
-    //   <p>Surname: {user.surname}</p>
-    //   <p>Username: {user.username}</p>
-    //   <p>You role is: {user.role}</p>
-      {/*user.role === UserRole.ADMIN && (
-        <p>
-          <Link to="/admin">Admin Panel</Link>
-        </p>
-      )} */}
-  //     <p>Your Cars:</p>
-  //     <ul>
-  //       {userCars && userCars.map((car) => (
-  //         <li key={car.id}>
-  //           {car.maker} {car.model} {car.fuelType} - {' '}
-  //           <Link to={`/addReview/${car.id}`}>Leave a Review</Link><br />
-  //           <Link to={`/carReviews/${car.id}`}>View Reviews for this Car</Link><br />
-  //           {/* <button onClick={() => onDeleteCar(car.id)}>Delete Car</button>  */}
-  //         </li>
-  //       ))}
-  //     </ul>
-  //     <AddCarForm onAddCar={handleAddCar} />
-  //     <Link to="/">Return to Start Page</Link>
-  //   </div>
-  // );
 }
 
 export default UserAccount;

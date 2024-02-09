@@ -17,7 +17,6 @@ export interface StrapiFault {
 }
 
 export interface StrapiReview {
-    reviewId: any;
     id: number;
     attributes: {
         createdAt: string | null;
@@ -26,7 +25,7 @@ export interface StrapiReview {
         userId: string | null;
         reviewId: string | null;
         carId: string | null;
-        releaseYear: string | null;
+        releaseYear: string | number;
         faults?: {
             data: StrapiFault[];
         }
@@ -75,8 +74,13 @@ export interface StrapiCarResponse {
         createdAt: string;
         updatedAt: string;
         publishedAt: string;
-        reviews: StrapiReview[];
+        reviews: StrapiReviewResponse;
     }
+}
+
+export interface StrapiReviewResponse {
+    data: StrapiReview[];
+
 }
 
 export interface StrapiMetaPagination {
@@ -109,6 +113,22 @@ export async function loadReviews(): Promise<StrapiListResponse<StrapiReview>> {
 
     return data;
 }
+
+// export async function loadReviewByReviewId(reviewId: string): Promise<StrapiListResponse<StrapiReview>> {
+//     const result = await fetch(`${BASE_URL}/api/reviews/?filters[reviewId][$eq]=${reviewId}`, {
+//         method: 'GET',
+//         headers: {
+//             Authorization: `Bearer ${TOKEN}`,
+//         },
+//         redirect: "follow"
+//     })
+//     const data = await result.json();
+//     const extractedData = data.data[0];
+//     const { userId, reviewId, carId, releaseYear, faults, generalImpression, starRating, createdAt, updatedAt, publishedAt} = extractedData.attributes;
+//     const { id } = extractedData;
+//     const unitedData = { id, carId, maker, model, fuelType, createdAt, updatedAt, publishedAt, reviews };
+//     return data;
+// }
 
 export async function addFault(data:
     {
@@ -195,6 +215,18 @@ export async function addReviewToCar(carId: number, idsOfCarReviews: number[]): 
     return result;
 }
 
+export async function loadLastReview(reviewId: string): Promise<StrapiListResponse<StrapiReview>>{
+    const result = await fetch(`${BASE_URL}/api/reviews/?filters[reviewId][$eq]=${reviewId}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${TOKEN}`,
+        },
+        redirect: "follow"
+    })
+    const data = await result.json();
+    return data;
+} 
+
 export async function addCar(
     data: {
         carId: string;
@@ -224,7 +256,7 @@ export async function addCar(
 }
 
 export async function loadCarsFromDb(): Promise<StrapiListResponse<StrapiCar>> {
-    const result = await fetch(`${BASE_URL}/api/cars?reviews`, {
+    const result = await fetch(`${BASE_URL}/api/cars?populate=reviews`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${TOKEN}`,
@@ -236,7 +268,7 @@ export async function loadCarsFromDb(): Promise<StrapiListResponse<StrapiCar>> {
 }
 
 export async function loadCarById(id: string): Promise<StrapiCar> {
-    const result = await fetch(`${BASE_URL}/api/cars/${id}?populate=reviews`, {
+    const result = await fetch(`${BASE_URL}/api/cars/${id}`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${TOKEN}`,
@@ -248,7 +280,7 @@ export async function loadCarById(id: string): Promise<StrapiCar> {
 }
 
 export async function loadCarByCarId(stringId: string): Promise<StrapiCar> {
-    const result = await fetch(`${BASE_URL}/api/cars?filters[carId][$eq]=${stringId}`, {
+    const result = await fetch(`${BASE_URL}/api/cars?filters[carId][$eq]=${stringId}&populate=reviews`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${TOKEN}`,
@@ -258,7 +290,9 @@ export async function loadCarByCarId(stringId: string): Promise<StrapiCar> {
     const data = await result.json();
     const extractedData = data.data[0];
     console.log(extractedData)
-    const { carId, maker, model, fuelType, createdAt, updatedAt, publishedAt, reviews } = extractedData.attributes;
+    const { carId, maker, model, fuelType, createdAt, updatedAt, publishedAt } = extractedData.attributes;
+    const reviews = extractedData.attributes.reviews.data;
+    console.log(reviews);
     const { id } = extractedData;
     const unitedData = { id, carId, maker, model, fuelType, createdAt, updatedAt, publishedAt, reviews };
     return unitedData;

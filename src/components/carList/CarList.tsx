@@ -4,7 +4,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { IconButton, List, ListItem, ListItemText, Tooltip } from '@mui/material';
 import React from 'react';
 import { Link } from "react-router-dom";
-import { StrapiCar } from '../../strapi/strapi';
+import { StrapiCar, StrapiCarResponse } from '../../strapi/strapi';
 
 const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: string) => void }> = ({ cars, onDeleteCar }) => {
 
@@ -15,17 +15,12 @@ const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: string) => voi
 
     return (
         <List sx={{ width: '100%', maxWidth: 600 }}>
-            {cars.map((car) => (
+            {cars && cars.map((car) => (
                 <ListItem key={car.id}>
                     <ListItemText
                         primary={`${car.maker} ${car.model} ${car.fuelType}`}
                     />
-                    {/*<Typography aria-label="add review" >*/}
-                    {/*    <Link to={`/addReview/${car.id}`} style={linkStyle}>Leave a Review</Link>*/}
-                    {/*</Typography>*/}
-                    {/*<Typography aria-label="view review" >*/}
-                    {/*    <Link to={`/viewReviews/${car.id}`} style={linkStyle}>View Reviews</Link>*/}
-                    {/*</Typography>*/}
+                    
                     <Link to={`/viewReviews/${car.id}`}>
                         <Tooltip title="View a Review">
                             <IconButton aria-label="view review">
@@ -51,6 +46,4 @@ const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: string) => voi
         </List>
     );
 }
-// <Link to={`/addReview/${car.id}`}>Leave a Review</Link><br />*/}
-{/*      <Link to={`/carReviews/${car.id}`}>View Reviews for this Car</Link><br />*/ }
 export default CarList;

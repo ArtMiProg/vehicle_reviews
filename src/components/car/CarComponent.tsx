@@ -35,9 +35,9 @@ export const OneCar: React.FC<CarProps> = (props) => {
      FuelType {fuelType} 
     </div>
     <div>
-      {reviews && reviews.length ? <>
+      {reviews && reviews.data.length ? <>
         <div>
-          {reviews.map(review => (
+          {reviews.data.map(review => (
             <OneReview key={review.id} review={review}/>
           ))}
         </div>

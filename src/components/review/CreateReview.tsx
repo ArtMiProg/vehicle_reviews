@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
-import { StrapiReview, StrapiUser, addReview, addReviewToCar, loadCarByCarId } from "../../strapi/strapi";
+import { StrapiReview, StrapiUser, addReview, addReviewToCar, loadCarByCarId, loadLastReview } from "../../strapi/strapi";
 import CreateFault from "../fault/CreateFault";
 import { Fault } from "../fault/FaultComponent";
 
@@ -44,19 +44,113 @@ function CreateReview() {
     //     loadReviewsActions(dispatch, reviews);
     // }, [dispatch, reviews]);
 
+    // useEffect(() => {
+    //     async function fetchData() {
+    //         const againFilledCar = await loadCarByCarId(`${car.carId}`);
+    //         setCarReviews(againFilledCar.reviews);
+    //         if (againFilledCar.reviews) {
+    //             const reviewIds: number[] = againFilledCar.reviews.map(review => review.id)
+    //             setIdsOfCarReviews(reviewIds);
+    //         }
+    //     } fetchData();
+    // }, []);
+
+    // useEffect(() => {
+    //     if(idsOfCarReviews.length != 0){
+    //         console.log(idsOfCarReviews)
+    //         const boundReviewToCar = async () => {
+    //             await addReviewToCar(car.id, idsOfCarReviews);
+    //             setIsAddingReview(false);
+    //             navigate("/account");
+    //         }
+    //         boundReviewToCar();
+    //     }      
+    // }, [ newReviewId, idsOfCarReviews])
+
+    // useEffect(() => {
+    //     const addNewReview = async () => {
+    //         let idForNewReview = uuidv4();
+    //         setNewReviewId(idForNewReview);
+    //         const reviewObject = {
+    //             userId: `${user.id}`,
+    //             reviewId: idForNewReview,
+    //             carId: car?.carId,
+    //             releaseYear: releaseYear,
+    //             //TODO
+    //             faults: ['14', '15'],
+    //             generalImpression: generalImpressionAboutCar,
+    //             starRating: 4
+    //         };
+    //         await addReview(reviewObject);
+    //         const newReview = await loadReviewByReviewId(idForNewReview);
+    //         const newReviewId = newReview.id;
+    //         setIdsOfCarReviews(prev => [...prev, newReviewId]);
+    //     }
+    //     if(isAddingReview){
+    //         addNewReview();
+    //     }
+    // }, [isAddingReview])
+
+    // useEffect(() => {
+    //     loadCarReviews().then(() => {
+    //         console.log(carReviews)
+    //     });
+    // }, []);
+
+    // useEffect(() => {
+    //     if(idsOfCarReviews.length != 0){
+    //         console.log(idsOfCarReviews)
+    //         const boundReviewToCar = async () => {
+    //             await addReviewToCar(car.id, idsOfCarReviews);
+    //             setIsAddingReview(false);
+    //             navigate("/account");
+    //         }
+    //         boundReviewToCar();
+    //     }      
+    // }, [idsOfCarReviews])
+
+    // useEffect(() => {
+    //     loadCarReviews().then(() => {
+    //         console.log(carReviews)
+    //         if(carReviews?.length != 0 && carReviews != undefined){
+    //             const reviewIds: number[] = carReviews.map(review => review.id)
+    //             setIdsOfCarReviews(reviewIds);
+    //         }
+    //     });
+    // }, [newReviewId]);
+
+    // const loadCarReviews = async () => {
+    //     const againFilledCar = await loadCarByCarId(`${car.carId}`);
+    //     console.log(againFilledCar)
+    //     setCarReviews(againFilledCar.reviews);
+    //     if (againFilledCar.reviews) {
+    //         const reviewIds: number[] = againFilledCar.reviews.map(review => review.id)
+    //         setIdsOfCarReviews(reviewIds);
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     const addNewReview = async () => {
+    //         let idForNewReview = uuidv4();
+    //         setNewReviewId(idForNewReview);
+    //         const reviewObject = {
+    //             userId: `${user.id}`,
+    //             reviewId: idForNewReview,
+    //             carId: car?.carId,
+    //             releaseYear: releaseYear,
+    //             //TODO
+    //             faults: ['14', '15'],
+    //             generalImpression: generalImpressionAboutCar,
+    //             starRating: 4
+    //         }
+    //         await addReview(reviewObject);
+    //     }
+    //     if(isAddingReview){
+    //         addNewReview();
+    //     }
+    // }, [isAddingReview])
     useEffect(() => {
-        async function fetchData() {
-            const againFilledCar = await loadCarByCarId(`${car.carId}`);
-            setCarReviews(againFilledCar.reviews);
-            if (againFilledCar.reviews) {
-                const reviewIds: number[] = againFilledCar.reviews.map(review => review.id)
-                setIdsOfCarReviews(reviewIds);
-            }
-        } fetchData();
-    }, []);
-    
-    useEffect(() => {
-        if(idsOfCarReviews.length != 0){
+        if (idsOfCarReviews.length != 0 && isAddingReview) {
             console.log(idsOfCarReviews)
             const boundReviewToCar = async () => {
                 await addReviewToCar(car.id, idsOfCarReviews);
@@ -64,43 +158,79 @@ function CreateReview() {
                 navigate("/account");
             }
             boundReviewToCar();
-        }      
-    }, [ newReviewId, idsOfCarReviews])
+        }
+    }
+        , [idsOfCarReviews]);
+
+    const loadCarReviews = async () => {
+        try {
+            const againFilledCar = await loadCarByCarId(car.carId);
+            console.log(againFilledCar);
+            setCarReviews(againFilledCar.reviews || []);
+            if (againFilledCar.reviews) {
+                const reviewIds: number[] = againFilledCar.reviews.map(review => review.id)
+                setIdsOfCarReviews(reviewIds);
+            }
+            return againFilledCar.reviews || [];
+        } catch (error) {
+            console.error('Failed to load car reviews:', error);
+        }
+    };
 
     useEffect(() => {
-        const addNewReview = async () => {
-            let idForNewReview = uuidv4();
-            setNewReviewId(idForNewReview);
-            const reviewObject = {
-                userId: `${user.id}`,
-                reviewId: idForNewReview,
-                carId: car?.carId,
-                releaseYear: releaseYear,
-                //TODO
-                faults: ['14', '15'],
-                generalImpression: generalImpressionAboutCar,
-                starRating: 4
+        if (isAddingReview) {
+            processReview().then((reviews) => {
+                console.log(reviews)
+            });
+        }
+    }, [isAddingReview]);
+
+    useEffect(() => {
+        loadCarReviews().then(() => {
+            console.log(carReviews)
+        });
+    }, []);
+
+    const processReview = async () => {
+        try {
+            if (newReviewId === undefined) {
+                return;
             }
-            await addReview(reviewObject);
-            
-            setIdsOfCarReviews(prev => [...prev, 57, 58]);
+            const lastReview = await loadLastReview(newReviewId);
+            console.log(lastReview);
+            setIdsOfCarReviews(prev => [...prev, lastReview.data[0].id])
+        } catch (error) {
+            console.error('Failed to load car reviews:', error);
         }
-        if(isAddingReview){
-            addNewReview();
-        }
-    }, [isAddingReview])
-
-    async function handleReviewSubmit() {
-
-        //@ts-ignore
-        // dispatch(actions.reviews.loadReviews(updatedReviews));
-        // localStorage.setItem('reviews', JSON.stringify(reviews));
-        // navigate("/account");
-
-               
-        setIsAddingReview(true);
-
     };
+
+    const handleReviewSubmit = async () => {
+        let idForNewReview = uuidv4();
+        setNewReviewId(idForNewReview);
+        setIsAddingReview(true);
+        const reviewObject = {
+            userId: `${user.id}`,
+            reviewId: idForNewReview,
+            carId: car?.carId,
+            releaseYear: releaseYear,
+            //TODO
+            faults: ['14', '15'],
+            generalImpression: generalImpressionAboutCar,
+            starRating: 4
+        }
+        await addReview(reviewObject);
+    };
+    //async function handleReviewSubmit() {
+
+    //@ts-ignore
+    // dispatch(actions.reviews.loadReviews(updatedReviews));
+    // localStorage.setItem('reviews', JSON.stringify(reviews));
+    // navigate("/account");
+
+
+    // setIsAddingReview(true);
+
+    //};
     return (
         <>
             {carId}
