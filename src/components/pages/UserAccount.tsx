@@ -29,7 +29,7 @@ function UserAccount() {
   const [selectedItem, setSelectedItem] = useState<MenuItems>('Account');
 
   const handleMenuItemClick = (item: MenuItems) => {
-      setSelectedItem(item);
+    setSelectedItem(item);
   };
 
   console.log(selectedItem)
@@ -67,7 +67,7 @@ function UserAccount() {
   }, []);
 
   useEffect(() => {
-    if(isAddingCar){      
+    if (isAddingCar) {
       const updatedUser = { ...user, cars: userCars };
       localStorage.setItem('currentUser', JSON.stringify(updatedUser));
       const idsOfUserCars: number[] = userCars.map(car => car.id);
@@ -84,98 +84,91 @@ function UserAccount() {
 
     setUserCars(prev => [...prev, newCar]);
     setIsAddingCar(true);
-    
+
   };
 
   const onDeleteCar = async (carId: number) => {
     try {
       await deleteCar(carId);
       setUserCars(prevUserCars => prevUserCars.filter(car => car.id !== carId));
-      
+
       const updatedUser = { ...user, cars: userCars.filter(car => car.id !== carId) };
       localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-      
+
       console.log(`Car with ID ${carId} deleted successfully.`);
-  } catch (error: any) {
+    } catch (error: any) {
       console.error('Error deleting car:', error.message);
+    }
   }
-  }
-
-  // const onDeleteCar = (carId: string) => {
-  //   const updatedCars = user.cars.filter((car) => car.id !== carId);
-  //   setUserCars(updatedCars);
-  //   const updatedUser = { ...user, cars: updatedCars };
-  //   localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-
 
   return (
     <Box sx={{ display: 'flex' }}>
-        <Drawer
-            sx={{
-              width: 240,
-              flexShrink: 0,
-              '& .MuiDrawer-paper': {
-                width: 240,
-                boxSizing: 'border-box',
-              },
-            }}
-            variant="permanent"
-            anchor="left"
-        >
-            <List>
-                <ListItemButton  onClick={() => handleMenuItemClick('Account')}>
-                    <ListItemIcon >
-                        <AccountCircleIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={`${user.name}`} />
-                </ListItemButton>
-                <ListItemButton onClick={() => handleMenuItemClick('Add Car')}>
-                    <ListItemIcon>
-                        <DirectionsCarIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Add Car" />
-                </ListItemButton>
-            </List>
-        </Drawer>
-        <Box
-            component="main"
-            sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
-            >
-            <Typography paragraph>
-                User Account
+      <Drawer
+        sx={{
+          width: 240,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: 240,
+            boxSizing: 'border-box',
+          },
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+        <List>
+          <ListItemButton onClick={() => handleMenuItemClick('Account')}>
+            <ListItemIcon >
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary={`${user.name}`} />
+          </ListItemButton>
+          <ListItemButton onClick={() => handleMenuItemClick('Add Car')}>
+            <ListItemIcon>
+              <DirectionsCarIcon />
+            </ListItemIcon>
+            <ListItemText primary="Add Car" />
+          </ListItemButton>
+        </List>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+      >
+        <Typography paragraph>
+          User Account
+        </Typography>
+        <Card sx={{ maxWidth: 345, }}>
+          <CardContent>
+            <Typography variant="h5" component="div">
+              {user.name} {user.surname}
             </Typography>
-            <Card sx={{ maxWidth: 345,  }}>
-                <CardContent>
-                    <Typography variant="h5" component="div">
-                        {user.name} {user.surname}
-                    </Typography>
-                    <Typography variant="body2">
-                        Username: {user.username}
-                    </Typography>
-                    <Typography variant="body2">
-                        Role: {user.role}
-                    </Typography>
-                    {/* {user.role === UserRole.ADMIN && (
+            <Typography variant="body2">
+              Username: {user.username}
+            </Typography>
+            <Typography variant="body2">
+              Role: {user.role}
+            </Typography>
+            {/* {user.role === UserRole.ADMIN && (
                         <Button variant="contained" color="primary" href="/admin" style={{ marginTop: '10px' }}>
                             Admin Panel
                         </Button>
                     )} */}
-                    {/* <Typography variant="h6">
+            {/* <Typography variant="h6">
                         Cars Count: {user.cars.length}
                     </Typography> */}
 
-                </CardContent>
-                <CarList cars={userCars} onDeleteCar={onDeleteCar}/>
-            </Card>
-            <Link to="/">
-                <Button variant="contained" color="secondary" style={{ marginTop:"10px" }} >
-                     Return to Start Page
-                </Button>
-            </Link>
-            <AddCarForm onAddCar={handleAddCar} />
-        </Box>
-
+          </CardContent>
+          <CarList cars={userCars} onDeleteCar={onDeleteCar} />
+        </Card>
+        <Link to="/">
+          <Button variant="contained" color="secondary" style={{ marginTop: "10px" }} >
+            Return to Start Page
+          </Button>
+        </Link>
+        <AddCarForm onAddCar={handleAddCar} />
       </Box>
+
+    </Box>
   )
 }
 

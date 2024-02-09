@@ -20,7 +20,6 @@ const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: number) => voi
                     <ListItemText
                         primary={`${car.maker} ${car.model} ${car.fuelType}`}
                     />
-                    
                     <Link to={`/carReviews/${car.id}`} state={car}>
                         <Tooltip title="View a Review">
                             <IconButton aria-label="view review">
@@ -40,7 +39,6 @@ const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: number) => voi
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>
-
                 </ListItem>
             ))}
         </List>
