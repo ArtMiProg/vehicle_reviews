@@ -4,7 +4,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { IconButton, List, ListItem, ListItemText, Tooltip } from '@mui/material';
 import React from 'react';
 import { Link } from "react-router-dom";
-import { StrapiCar, StrapiCarResponse } from '../../strapi/strapi';
+import { StrapiCar, StrapiCarResponse } from '../../strapi/strapiCar';
 
 const CarList: React.FC<{ cars: StrapiCar[], onDeleteCar: (carId: number) => void }> = ({ cars, onDeleteCar }) => {
 

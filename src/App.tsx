@@ -44,7 +44,4 @@ function App() {
 }
 
 export default App;
-function setUsers(arg0: (prevUsers: any) => any) {
-  throw new Error('Function not implemented.');
-}
 

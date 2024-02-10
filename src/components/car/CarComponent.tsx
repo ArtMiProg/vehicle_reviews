@@ -1,15 +1,13 @@
-import Accordion from '@mui/material/Accordion';
-import { FuelType } from '../../enums/FuelType';
-import { StrapiCar, StrapiCarResponse } from '../../strapi/strapi';
-import { OneReview, Review } from '../review/ReviewComponent';
-import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import { FuelType } from '../../enums/FuelType';
 import { Item } from '../../pages/StartPage';
+import { StrapiCarResponse } from '../../strapi/strapiCar';
+import { OneReview } from '../review/ReviewComponent';
 
 interface CarProps {
   car: StrapiCarResponse;

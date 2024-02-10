@@ -1,5 +1,6 @@
 import Accordion from '@mui/material/Accordion';
-import { StrapiReview } from '../../strapi/strapi';
+import { StrapiFault } from '../../strapi/strapi';
+import {StrapiReview } from '../../strapi/strapiReview'
 import { User } from '../../AuthContext';
 
 import { Fault, OneFault } from '../fault/FaultComponent';
@@ -44,11 +45,11 @@ export const OneReview: React.FC<ReviewProps> = (props) => {
         </Typography>
         <Typography>
           {faults && faults.data.length ? <>
-            <div>
-              {faults.data.map(fault => (
+            
+              {faults.data.map((fault: StrapiFault) => (
                 <OneFault key={fault.id} fault={fault} />
               ))}
-            </div>
+            
           </> : "no faults"
           }
         </Typography>

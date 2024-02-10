@@ -76,7 +76,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLogin, handleLogOut }) => {
                         <Typography
                             variant="h6"
                             component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' },  maxWidth: '18%' }}
+                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' },  maxWidth: '20%' }}
                         >
                             WELCOME, {currentUser.username}!
                         </Typography>
