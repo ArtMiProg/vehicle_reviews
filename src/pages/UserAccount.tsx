@@ -1,37 +1,56 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { StrapiUser, addCarToUser, loadUserCars, loadUserRole } from "../strapi/strapiUser";
-import { StrapiCar, deleteCar } from "../strapi/strapiCar";
-import AddCarForm from "../components/car/AddCarForm";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import {
   Box,
-  Button,
   Card,
   CardContent,
   Drawer,
   List,
-  ListItem, ListItemButton,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Typography
 } from "@mui/material";
+import { useEffect, useState } from "react";
+import AddCarForm from "../components/car/AddCarForm";
 import CarList from "../components/carList/CarList";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import { StrapiCar, deleteCar } from "../strapi/strapiCar";
+import { StrapiUser, addCarToUser, loadUserCars, loadUserRole } from "../strapi/strapiUser";
+import { Home } from "@mui/icons-material";
+import Navbar from "../components/navbar/Navbar";
+import { User } from "../AuthContext";
 
-type MenuItems = 'Account' | 'Add Car';
+type MenuItems = 'Account' | 'Add Car' | 'StartPage';
 
 function UserAccount() {
   const user: StrapiUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+  const [currentUser, setCurrentUser] = useState<User | null>(
+    JSON.parse(localStorage.getItem("currentUser") || "null")
+  );
   const [userRole, setUserRole] = useState<string>();
   user.role = userRole;
   const [userCars, setUserCars] = useState<StrapiCar[]>([]);
   const [isAddingCar, setIsAddingCar] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MenuItems>('Account');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleMenuItemClick = (item: MenuItems) => {
     setSelectedItem(item);
   };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleLogOut = () => {
+    localStorage.removeItem("currentUser");
+    setCurrentUser(null);
+  };
+
 
   console.log(selectedItem)
 
@@ -103,73 +122,84 @@ function UserAccount() {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Drawer
-        sx={{
-          width: 240,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
+    <>
+      <Navbar isLogin={!!currentUser} handleLogOut={handleLogOut} />
+      <Box sx={{ display: 'flex'}}>
+        <Drawer
+          sx={{
             width: 240,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="permanent"
-        anchor="left"
-      >
-        <List>
-          <ListItemButton onClick={() => handleMenuItemClick('Account')}>
-            <ListItemIcon >
-              <AccountCircleIcon />
-            </ListItemIcon>
-            <ListItemText primary={`${user.name}`} />
-          </ListItemButton>
-          <ListItemButton onClick={() => handleMenuItemClick('Add Car')}>
-            <ListItemIcon>
-              <DirectionsCarIcon />
-            </ListItemIcon>
-            <ListItemText primary="Add Car" />
-          </ListItemButton>
-        </List>
-      </Drawer>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
-      >
-        <Typography paragraph>
-          User Account
-        </Typography>
-        <Card sx={{ maxWidth: 345, }}>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              {user.name} {user.surname}
-            </Typography>
-            <Typography variant="body2">
-              Username: {user.username}
-            </Typography>
-            <Typography variant="body2">
-              Role: {user.role}
-            </Typography>
-            {/* {user.role === UserRole.ADMIN && (
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              marginTop: 9,
+              width: 240,
+              boxSizing: 'border-box',
+            },
+          }}
+          variant="permanent"
+          anchor="left"
+        >
+          <List>
+            <ListItemButton onClick={() => handleMenuItemClick('Account')}>
+              <ListItemIcon >
+                <AccountCircleIcon />
+              </ListItemIcon>
+              <ListItemText primary={`${user.username}`} />
+            </ListItemButton>
+            <ListItemButton onClick={handleOpenModal}>
+              <ListItemIcon>
+                <DirectionsCarIcon />
+              </ListItemIcon>
+              <ListItemText primary="Add Car" />
+            </ListItemButton>
+            <ListItemButton onClick={() => handleMenuItemClick('StartPage')} href="/">
+              <ListItemIcon>
+                <Home />
+              </ListItemIcon>
+              <ListItemText primary="StartPage" />
+            </ListItemButton>
+          </List>
+        </Drawer>
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3, marginTop: 1 }}
+        >
+          <Typography paragraph>
+            {`You have ${user.role} account`}
+          </Typography>
+          <Card sx={{ maxWidth: 800, }}>
+            <CardContent>
+              <Typography variant="h5" component="div">
+                List of your cars:
+              </Typography>
+              {/* {user.role === UserRole.ADMIN && (
                         <Button variant="contained" color="primary" href="/admin" style={{ marginTop: '10px' }}>
                             Admin Panel
                         </Button>
                     )} */}
-            {/* <Typography variant="h6">
+              {/* <Typography variant="h6">
                         Cars Count: {user.cars.length}
                     </Typography> */}
 
-          </CardContent>
-          <CarList cars={userCars} onDeleteCar={onDeleteCar} />
-        </Card>
-        <Link to="/">
-          <Button variant="contained" color="secondary" style={{ marginTop: "10px" }} >
-            Return to Start Page
-          </Button>
-        </Link>
-        <AddCarForm onAddCar={handleAddCar} />
+            </CardContent>
+            {userCars.length > 0 ?
+              <CarList cars={userCars} onDeleteCar={onDeleteCar} />
+              :
+              <>
+                <Typography>
+                  You didn't add any car yet.
+                </Typography>
+                <Typography>
+                  If you wanna create a review for a car, press "Add car" first for adding a car to your list
+                </Typography>
+              </>
+            }
+          </Card>
+          {isModalOpen && (
+            <AddCarForm onClose={handleCloseModal} onAddCar={handleAddCar} />
+          )}
+        </Box>
       </Box>
-
-    </Box>
+    </>
   )
 }
 

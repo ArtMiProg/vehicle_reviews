@@ -3,4 +3,5 @@ export enum FuelType {
   Diesel = 'diesel',
   Gas = 'gas',
   Electro = 'electro',
+  None = '',
 }

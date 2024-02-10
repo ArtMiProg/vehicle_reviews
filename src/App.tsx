@@ -1,20 +1,19 @@
+import { Provider } from 'react-redux';
 import {
   BrowserRouter,
-  Routes,
   Route,
+  Routes,
 } from 'react-router-dom';
-import StartPage from './pages/StartPage';
+import { AuthProvider } from './AuthContext';
 import { Content } from './Content';
-import UserAccount from './pages/UserAccount';
-import CreateReview from './pages/CreateReview';
-import React, { useState } from 'react';
-import { AuthProvider, User, UserRole } from './AuthContext';
 import AdminPanel from "./components/admin/AdminPanel";
 import CarReviews from './pages/CarReviews';
-import { Provider } from 'react-redux';
-import { store } from './store';
+import CreateReview from './pages/CreateReview';
 import RegistrationForm from './pages/RegistrationForm';
 import SignInForm from './pages/SingInForm';
+import StartPage from './pages/StartPage';
+import UserAccount from './pages/UserAccount';
+import { store } from './store';
 
 function App() {
 

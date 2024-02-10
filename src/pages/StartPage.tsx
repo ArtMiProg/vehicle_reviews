@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { StrapiListResponse} from "../strapi/strapi";
+import { StrapiListResponse } from "../strapi/strapi";
 import { loadCarsFromDb } from "../strapi/strapiCar";
 import { User } from "../AuthContext";
 import { OneCar } from "../components/car/CarComponent";
@@ -10,7 +10,8 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Card from "@mui/material/Card";
-import { CardContent, Typography } from "@mui/material";
+import { CardContent, IconButton, Typography } from "@mui/material";
+import { KeyboardArrowDown } from "@mui/icons-material";
 
 export const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -18,6 +19,21 @@ export const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+}));
+
+const BannerContainer = styled(Box)(({ theme }) => ({
+    backgroundImage: `url("/images/banner.jpg")`,
+    backgroundRepeat: 'no-repeat',
+    minHeight: '400px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundSize: '100% 100%',
+}));
+
+const BannerContent = styled(Box)(({ theme }) => ({
+    textAlign: 'center',
+    color: theme.palette.mode === 'dark' ? '#fff' : '#000',
 }));
 
 function StartPage() {
@@ -91,27 +107,39 @@ function StartPage() {
     return (
         <>
             <Navbar isLogin={!!currentUser} handleLogOut={handleLogOut} />
-            <Card sx={{ minWidth: '95%' }}>
-                <CardContent>
-                    <Typography
-                        gutterBottom
-                        variant="h1"
-                        component="div"
-                        fontWeight='bold'
-                    >
+            <BannerContainer>
+                <BannerContent>
+                    <Typography variant="h1" component="h1" color="#fff" fontWeight="bold" gutterBottom>
                         CAR REVIEWS
                     </Typography>
-                    <Typography variant="h3" color="text.secondary">
+                    <Typography variant="h3" color="#fff" gutterBottom>
                         Find out the car's reliability
                     </Typography>
-                    <Typography variant="h3" color="text.secondary">
+                    <Typography variant="h3" color="#fff" gutterBottom>
                         Already have a car?
                     </Typography>
-                    <Typography variant="h3" color="text.secondary">
+                    <Typography variant="h3" color="#fff" gutterBottom>
                         Tell others about it!
                     </Typography>
-                </CardContent>
-            </Card>
+                    <IconButton
+                        sx={{
+                            position: 'absolute',
+                            bottom: '3px', 
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            color: 'primary.main',
+                        }}
+                        onClick={() => {
+                            window.scrollBy({
+                                top: window.innerHeight * 0.6, 
+                                behavior: 'smooth',
+                            });
+                        }}
+                    >
+                        <KeyboardArrowDown />
+                    </IconButton>
+                </BannerContent>
+            </BannerContainer>
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                     {allCars ? allCars.data.map((car) => (
