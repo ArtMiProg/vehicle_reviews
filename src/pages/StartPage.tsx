@@ -124,7 +124,7 @@ function StartPage() {
                     <IconButton
                         sx={{
                             position: 'absolute',
-                            bottom: '3px', 
+                            bottom: '140px', 
                             left: '50%',
                             transform: 'translateX(-50%)',
                             color: 'primary.main',

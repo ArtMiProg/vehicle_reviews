@@ -19,6 +19,8 @@ import { StrapiUser, addCarToUser, loadUserCars, loadUserRole } from "../strapi/
 import { Home } from "@mui/icons-material";
 import Navbar from "../components/navbar/Navbar";
 import { User } from "../AuthContext";
+import { useDispatch } from "react-redux";
+import { loadCarsActions } from "../actions/loadings";
 
 type MenuItems = 'Account' | 'Add Car' | 'StartPage';
 
@@ -121,6 +123,12 @@ function UserAccount() {
     }
   }
 
+  const dispatch = useDispatch();
+
+    useEffect(() => {
+        loadCarsActions(dispatch, userCars);
+    }, [dispatch, userCars]);
+
   return (
     <>
       <Navbar isLogin={!!currentUser} handleLogOut={handleLogOut} />
@@ -182,7 +190,7 @@ function UserAccount() {
 
             </CardContent>
             {userCars.length > 0 ?
-              <CarList cars={userCars} onDeleteCar={onDeleteCar} />
+              <CarList onDeleteCar={onDeleteCar} />
               :
               <>
                 <Typography>
