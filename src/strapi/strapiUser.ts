@@ -99,3 +99,21 @@ export async function addCarToUser(userId: number, carIds: number[]): Promise<St
     }
 }
 
+export async function loadUserByUserId(userId: string | null): Promise<StrapiUser> {
+    const result = await fetch(`${BASE_URL}/api/users/${userId}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${TOKEN}`,
+        },
+        redirect: "follow"
+    })
+    const data = await result.json();
+    // const extractedData = data.data[0];
+    // console.log(extractedData)
+    // const { userId, maker, model, fuelType, createdAt, updatedAt, publishedAt } = extractedData.attributes;
+    // const reviews = extractedData.attributes.reviews.data;
+    // console.log(reviews);
+    // const { id } = extractedData;
+    // const unitedData = { id, carId, maker, model, fuelType, createdAt, updatedAt, publishedAt, reviews };
+    return data;
+}
