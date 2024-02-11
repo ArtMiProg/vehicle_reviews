@@ -6,6 +6,10 @@ import { StrapiUser } from "../strapi/strapiUser";
 import { loadCarByCarId } from "../strapi/strapiCar";
 import CreateFault from "../components/fault/CreateFault";
 import { Fault } from "../components/fault/FaultComponent";
+import Box from "@mui/material/Box";
+import { Button, FormControl, InputLabel, TextField, Typography } from "@mui/material";
+import Navbar from "../components/navbar/Navbar";
+import { User } from "../AuthContext";
 
 function CreateReview() {
     let { state } = useLocation();
@@ -15,38 +19,59 @@ function CreateReview() {
     const [releaseYear, setReleaseYear] = useState<string | number>("")
     const years: number[] = Array.from({ length: new Date().getFullYear() - 1900 }, (_, index) => new Date().getFullYear() - index);
     const [faults, setFaults] = useState<Fault[]>([]);
-    const [isGeneralImpressionOpen, setIsGeneralImpressionOpen] = useState<boolean>(false);
     const [generalImpressionAboutCar, setGeneralImpressionAboutCar] = useState<string>("");
     const [isAddingReview, setIsAddingReview] = useState<boolean>(false);
     const [newReviewId, setNewReviewId] = useState<string>();
     const [carReviews, setCarReviews] = useState<StrapiReview[]>();
     const [idsOfCarReviews, setIdsOfCarReviews] = useState<number[]>([]);
     console.log(idsOfCarReviews)
+    const [showRegistration, setShowRegistration] = useState(false);
+    const [currentUser, setCurrentUser] = useState<User | null>(
+        JSON.parse(localStorage.getItem("currentUser") || "null")
+    );
 
+    const handleSignUpClick = () => {
+        setShowRegistration(true);
+        navigate('/signup')
+    };
 
+    const handleRegistrationClose = () => {
+        setShowRegistration(false);
+    };
+
+    const [showSignInForm, setShowSignInForm] = useState(false);
+
+    const handleSignInClick = () => {
+        setShowSignInForm(true);
+        navigate('/signin')
+    };
+
+    const handleSignInClose = (loggedInUser: User | null) => {
+        setShowSignInForm(false);
+        setCurrentUser(loggedInUser);
+    };
+
+    const handleLogOut = () => {
+        localStorage.removeItem("currentUser");
+        setCurrentUser(null);
+    };
     useEffect(() => {
         setReleaseYear(new Date().getFullYear());
     }, []);
 
-    const toggleGeneralImpression = () => {
-        setIsGeneralImpressionOpen(!isGeneralImpressionOpen);
-    };
-
     const handleGeneralImpressionSubmit = () => {
         setGeneralImpressionAboutCar(generalImpressionAboutCar);
-        toggleGeneralImpression();
-        localStorage.setItem('generalImpression', JSON.stringify(generalImpressionAboutCar));
+
     };
 
     const navigate = useNavigate();
-    //@ts-ignore
+    // // @ts-ignore
     // const dispatch = useAppDispatch();
 
     // useEffect(() => {
     //     loadReviewsActions(dispatch, reviews);
     // }, [dispatch, reviews]);
 
-    
     useEffect(() => {
         if (idsOfCarReviews.length != 0 && isAddingReview) {
             console.log(idsOfCarReviews)
@@ -125,68 +150,66 @@ function CreateReview() {
     // localStorage.setItem('reviews', JSON.stringify(reviews));
     // navigate("/account");
 
-
     // setIsAddingReview(true);
 
     //};
     return (
-        <>
-            {carId}
-            <br></br>
-            {car?.maker} {car?.model} <br></br>
-            {car?.fuelType}
-            <p>
-                Car is of {releaseYear} release year
-                <label>
-                    <select
-                        value={releaseYear}
-                        onChange={(e) => setReleaseYear(parseInt(e.target.value))}
-                    >
-                        {years.map((year) => (
-                            <option key={year} value={year}>
-                                {year}
-                            </option>
-                        ))}
-                    </select>
-                </label>
-            </p>
-            <CreateFault />
-            <button onClick={toggleGeneralImpression}>
-                {isGeneralImpressionOpen ? 'Cancel General Impression' : 'Add General Impression'}
-            </button>
-
-            {isGeneralImpressionOpen && (
-                <div>
-                    <textarea
-                        value={generalImpressionAboutCar}
-                        onChange={(e) => setGeneralImpressionAboutCar(e.target.value)}
-                        placeholder="General Impression About Car"
-                    />
-                    <button onClick={handleGeneralImpressionSubmit}>Submit General Impression</button>
-                </div>
-            )}
-
-            {generalImpressionAboutCar && (
-                <div>
-                    <p>General Impression:</p>
-                    <p>{generalImpressionAboutCar}</p>
-                </div>
-            )}
-            <div>
-                {faults.map((fault, index) => (
-                    <div key={index}>
-                        <h3>{fault.shortDescription}</h3>
-                        <p>{`Fault: ${fault.shortDescription}`}</p>
-                        <p>{`Year of Exploitation: ${fault.yearOfExploitation}`}</p>
-                        <p>{`Mileage: ${fault.mileage}`}</p>
-                        <p>{`Description: ${fault.detailedDescription}`}</p>
-                        <hr />
-                    </div>
-                ))}
-            </div>
-            <button onClick={handleReviewSubmit}>Submit Review</button>
-        </>
+        <Box>
+            <Navbar isLogin={!!currentUser} handleLogOut={handleLogOut} />
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+                maxWidth: 400
+            }}
+                marginTop={2}
+                marginLeft={3}
+            >
+                <Typography>
+                    You are creating a review for the car Nr {carId}
+                </Typography>
+                <Typography>
+                    <span style={{ fontWeight: 'bold' }}>Maker: </span> {car?.maker}
+                </Typography>
+                <Typography>
+                    <span style={{ fontWeight: 'bold' }}>Model: </span> {car?.model}
+                </Typography>
+                <Typography>
+                    <span style={{ fontWeight: 'bold' }}>Fuel type: </span> {car?.fuelType}
+                </Typography>
+                <InputLabel>
+                    Indicate the year of production of your car
+                </InputLabel>
+                <TextField
+                    label="Release Year"
+                    type="number"
+                    value={releaseYear}
+                    onChange={(e) => setReleaseYear(parseInt(e.target.value))}
+                    InputProps={{
+                        inputProps: {
+                            min: years[years.length - 1],
+                            max: years[0]
+                        }
+                    }}
+                    variant="outlined"
+                    sx={{
+                        maxWidth: 150
+                    }}
+                />
+                <TextField
+                    label="General Impression About Car"
+                    multiline
+                    rows={4}
+                    value={generalImpressionAboutCar}
+                    onChange={(e) => setGeneralImpressionAboutCar(e.target.value)}
+                    variant="outlined"
+                    fullWidth
+                />
+                <Button onClick={handleReviewSubmit}>Submit Review</Button>
+            </Box>
+        </Box>
 
     )
 }
 export default CreateReview;
+
