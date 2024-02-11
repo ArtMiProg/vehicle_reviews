@@ -49,7 +49,7 @@ export async function addReview(
         releaseYear: string | number,
         faults: string[],
         generalImpression: string | null,
-        starRating: number
+        starRating: number | null
     }
 ): Promise<StrapiListResponse<StrapiReview>> {
     const body = {

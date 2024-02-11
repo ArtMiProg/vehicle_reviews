@@ -72,12 +72,14 @@ function CarReviews() {
                                 marginTop: 2,
                                 border: '1px solid #ccc',
                                 padding: '8px',
-                                borderRadius: '4px'
+                                borderRadius: '4px',
+                                maxWidth: 270,
+                                overflowWrap: 'break-word'
                             }}>
-                                <Typography sx={{ backgroundColor: '#E0E0E0' }}>Left by user: {handleWriteUserToReviewHeader(review.attributes.userId)}</Typography>
-                                <Typography>Car is of {review.attributes.releaseYear} release year</Typography>
-                                <Typography>General Impression: {review.attributes.generalImpression}</Typography>
-                                <Typography>My rating for this car:</Typography>
+                                <Typography sx={{ backgroundColor: '#E0E0E0'}}>Left by user: {handleWriteUserToReviewHeader(review.attributes.userId)}</Typography>
+                                <Typography style={{ whiteSpace: 'pre-wrap' }}>Car is of {review.attributes.releaseYear} release year</Typography>
+                                <Typography style={{ whiteSpace: 'pre-wrap' }}>General Impression: {review.attributes.generalImpression}</Typography>
+                                <Typography style={{ whiteSpace: 'pre-wrap' }}>My rating for this car:</Typography>
                                 <Rating value={review.attributes.starRating} readOnly />
                             </MenuItem>
                         ))

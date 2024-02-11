@@ -7,7 +7,7 @@ import { loadCarByCarId } from "../strapi/strapiCar";
 import CreateFault from "../components/fault/CreateFault";
 import { Fault } from "../components/fault/FaultComponent";
 import Box from "@mui/material/Box";
-import { Button, FormControl, InputLabel, TextField, Typography } from "@mui/material";
+import { Button, FormControl, InputLabel, Rating, TextField, Typography } from "@mui/material";
 import Navbar from "../components/navbar/Navbar";
 import { User } from "../AuthContext";
 
@@ -24,7 +24,7 @@ function CreateReview() {
     const [newReviewId, setNewReviewId] = useState<string>();
     const [carReviews, setCarReviews] = useState<StrapiReview[]>();
     const [idsOfCarReviews, setIdsOfCarReviews] = useState<number[]>([]);
-    console.log(idsOfCarReviews)
+    const [carRating, setCarRating] = useState<number | null>(1);
     const [showRegistration, setShowRegistration] = useState(false);
     const [currentUser, setCurrentUser] = useState<User | null>(
         JSON.parse(localStorage.getItem("currentUser") || "null")
@@ -139,7 +139,7 @@ function CreateReview() {
             //TODO
             faults: ['14', '15'],
             generalImpression: generalImpressionAboutCar,
-            starRating: 4
+            starRating: carRating
         }
         await addReview(reviewObject);
     };
@@ -204,6 +204,14 @@ function CreateReview() {
                     onChange={(e) => setGeneralImpressionAboutCar(e.target.value)}
                     variant="outlined"
                     fullWidth
+                />
+
+                <Rating
+                    name="rating"
+                    value={carRating}
+                    onChange={(event, newValue) => {
+                        setCarRating(newValue);
+                    }}
                 />
                 <Button onClick={handleReviewSubmit}>Submit Review</Button>
             </Box>
