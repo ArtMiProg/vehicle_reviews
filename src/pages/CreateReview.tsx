@@ -213,7 +213,7 @@ function CreateReview() {
                         setCarRating(newValue);
                     }}
                 />
-                <Button onClick={handleReviewSubmit}>Submit Review</Button>
+                <Button style={{backgroundColor: '#2196f3', color: '#e3f2fd', width: '170px'}} onClick={handleReviewSubmit}>Submit Review</Button>
             </Box>
         </Box>
 

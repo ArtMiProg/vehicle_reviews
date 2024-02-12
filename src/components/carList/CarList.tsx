@@ -1,15 +1,12 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import SearchIcon from '@mui/icons-material/Search';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import { Box, IconButton, List, ListItem, ListItemText, Tooltip, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
-import { StrapiCar, StrapiCarResponse } from '../../strapi/strapiCar';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, store } from '../../store';
-import { loadSingleCarActions } from '../../actions/loadings';
+import { RootState } from '../../store';
+import { StrapiCar } from '../../strapi/strapiCar';
 
 const CarList: React.FC<{ onDeleteCar: (carId: number) => void }> = ({ onDeleteCar }) => {
 

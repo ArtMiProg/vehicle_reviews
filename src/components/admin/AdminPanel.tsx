@@ -133,7 +133,7 @@ function AdminPanel() {
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.surname}</TableCell>
                   <TableCell>{user.role.name}</TableCell>
-                  <TableCell sx={{ display: 'flex', flexDirection: 'row' }}>
+                  <TableCell sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                     {user.role.name !== 'Admin' ? (
                       <>
                         <Tooltip title="Delete user">
