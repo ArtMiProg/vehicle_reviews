@@ -23,6 +23,7 @@ function CarReviews() {
     const [currentUser, setCurrentUser] = useState<User | null>(
         JSON.parse(localStorage.getItem("currentUser") || "null")
     );
+    const [averageRating, setAverageRating] = useState<number>(0);
 
     const navigate = useNavigate();
 
@@ -52,7 +53,7 @@ function CarReviews() {
         localStorage.removeItem("currentUser");
         setCurrentUser(null);
     };
-    
+
     const loadCarReviews = async () => {
         try {
             const againFilledCar = await loadCarByCarId(car.carId);
@@ -82,6 +83,17 @@ function CarReviews() {
         }
     }, [reviews]);
 
+    useEffect(() => {
+        if (reviews) {
+            let totalRating = 0;
+            reviews.forEach(review => {
+                totalRating += review.attributes.starRating;
+            });
+            const average = totalRating / reviews.length;
+            setAverageRating(average);
+        }
+    }, [reviews]);
+
     function handleWriteUserToReviewHeader(userId: string | null) {
         const id: number = Number(userId);
         usersWhoAddedReview.find(user => user.id === id)
@@ -98,6 +110,10 @@ function CarReviews() {
                     </Typography>
                 </CardContent>
                 <CardActions sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+                        Average car rating
+                        <Rating value={averageRating} readOnly />
+                    </Typography>
                     {reviews && reviews.length > 0 ? (
                         reviews.map((review) => (
                             <MenuItem key={review.id} sx={{
@@ -109,7 +125,7 @@ function CarReviews() {
                                 borderRadius: '4px',
                                 maxWidth: 270
                             }}>
-                                <Typography sx={{ backgroundColor: '#E0E0E0'}}>Left by user: {handleWriteUserToReviewHeader(review.attributes.userId)}</Typography>
+                                <Typography sx={{ backgroundColor: '#E0E0E0' }}>Left by user: {handleWriteUserToReviewHeader(review.attributes.userId)}</Typography>
                                 <Typography style={{ whiteSpace: 'pre-wrap' }}>Car is of {review.attributes.releaseYear} release year</Typography>
                                 <Typography style={{ whiteSpace: 'pre-wrap' }}>General Impression: {review.attributes.generalImpression}</Typography>
                                 <Typography style={{ whiteSpace: 'pre-wrap' }}>My rating for this car:</Typography>
