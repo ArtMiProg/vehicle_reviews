@@ -1,13 +1,15 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Grid } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Grid } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { FuelType } from '../../enums/FuelType';
 import { Item } from '../../pages/StartPage';
 import { StrapiCarResponse } from '../../strapi/strapiCar';
 import { OneReview } from '../review/ReviewComponent';
+import { useState } from 'react';
 
 interface CarProps {
   car: StrapiCarResponse;
@@ -25,31 +27,62 @@ export const OneCar: React.FC<CarProps> = (props) => {
     },
   } = props.car;
 
+  const [showReviews, setShowReviews] = useState(false);
+
+  const toggleReviews = () => {
+    setShowReviews(!showReviews);
+  };
+
   return <div>
-    <Accordion>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1-content"
-        id="panel1-header"
-      >
-        <Typography>
+    <Card>
+      <CardContent>
+        <Typography variant="h5" component="div" textAlign='left'>
           {maker} {model} {fuelType}
         </Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        {reviews && reviews.data.length ?
-          <>
-            {reviews.data.map(review => (
-              <Grid item xs={12}>
-                <Item>
+        {reviews && reviews.data.length > 0 && (
+          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+            <Item sx={{ backgroundColor: '#F5F5F5', mb: 2 }}>
+              <OneReview key={reviews.data[0].id} review={reviews.data[0]} />
+            </Item>
+          </Grid>
+        )}
+
+      </CardContent>
+      <CardActions sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button
+          onClick={toggleReviews}
+          startIcon={<MoreVertIcon />}
+          sx={{ backgroundColor: '#E0E0E0', color: '#333333' }}
+        >
+          {
+            showReviews
+              ?
+              <Typography sx={{ color: '#333333' }}>
+                Collapse the rest of reviews
+              </Typography>
+              :
+              <Typography sx={{ color: '#333333' }}>
+                Show more reviews
+              </Typography>
+          }
+        </Button>
+      </CardActions>
+      {showReviews && (
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', mb: 2 }}>
+          {reviews && reviews.data.length ? (
+            reviews.data.slice(1).map(review => (
+              <Grid item xs={12} sx={{ alignSelf: 'flex-end', mb: 2 }}>
+                <Item sx={{ backgroundColor: '#F5F5F5', mb: 2 }}>
                   <OneReview key={review.id} review={review} />
                 </Item>
               </Grid>
-            ))}
-          </> : <Typography>There is no reviews for this car yet</Typography>
-        }
-      </AccordionDetails>
-    </Accordion>
+            ))
+          ) : (
+            <Typography>No reviews for this car yet</Typography>
+          )}
+        </Box>
+      )}
+    </Card>
   </div>
 }
 

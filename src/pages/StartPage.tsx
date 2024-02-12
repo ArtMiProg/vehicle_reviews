@@ -141,15 +141,15 @@ function StartPage() {
                 </BannerContent>
             </BannerContainer>
             <Box sx={{ flexGrow: 1 }}>
-                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="center">
                     {allCars ? allCars.data.map((car) => (
-                        <Grid item xs={6}>
+                        
+                        <Grid item xs={3.5}>
                             <Item>
                                 <OneCar key={car.id} car={car} />
                             </Item>
                         </Grid>
-
-                    )) : "loading"
+                    )) : <Typography>Loading...</Typography>
                     }
                 </Grid>
             </Box>

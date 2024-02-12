@@ -73,8 +73,7 @@ function CarReviews() {
                                 border: '1px solid #ccc',
                                 padding: '8px',
                                 borderRadius: '4px',
-                                maxWidth: 270,
-                                overflowWrap: 'break-word'
+                                maxWidth: 270
                             }}>
                                 <Typography sx={{ backgroundColor: '#E0E0E0'}}>Left by user: {handleWriteUserToReviewHeader(review.attributes.userId)}</Typography>
                                 <Typography style={{ whiteSpace: 'pre-wrap' }}>Car is of {review.attributes.releaseYear} release year</Typography>
