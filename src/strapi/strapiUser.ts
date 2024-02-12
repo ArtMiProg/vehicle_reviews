@@ -108,12 +108,32 @@ export async function loadUserByUserId(userId: string | null): Promise<StrapiUse
         redirect: "follow"
     })
     const data = await result.json();
-    // const extractedData = data.data[0];
-    // console.log(extractedData)
-    // const { userId, maker, model, fuelType, createdAt, updatedAt, publishedAt } = extractedData.attributes;
-    // const reviews = extractedData.attributes.reviews.data;
-    // console.log(reviews);
-    // const { id } = extractedData;
-    // const unitedData = { id, carId, maker, model, fuelType, createdAt, updatedAt, publishedAt, reviews };
     return data;
+}
+
+export async function loadAllUsers(): Promise<StrapiUser[]> {
+    const result = await fetch(`${BASE_URL}/api/users?populate=*`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${TOKEN}`,
+        },
+        redirect: "follow"
+    })
+    const data = await result.json();
+    return data;
+}
+
+export async function deleteUser(id: number): Promise<void>{
+    const result = await fetch(`${BASE_URL}/api/users/${id}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${TOKEN}`,
+        },
+        redirect: "follow"
+    })
+    const response = await result.json();
+    if (!result.ok) {
+        const errorMessage = await result.text(); 
+        throw new Error(`Failed to delete user: ${errorMessage}`);
+    }
 }

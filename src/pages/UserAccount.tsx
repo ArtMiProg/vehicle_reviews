@@ -1,7 +1,9 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Drawer,
@@ -22,7 +24,7 @@ import { User } from "../AuthContext";
 import { useDispatch } from "react-redux";
 import { loadCarsActions } from "../actions/loadings";
 
-type MenuItems = 'Account' | 'Add Car' | 'StartPage';
+type MenuItems = 'Account' | 'Add Car' | 'Admin' | 'StartPage';
 
 function UserAccount() {
   const user: StrapiUser = JSON.parse(localStorage.getItem("currentUser") || "null");
@@ -52,9 +54,6 @@ function UserAccount() {
     localStorage.removeItem("currentUser");
     setCurrentUser(null);
   };
-
-
-  console.log(selectedItem)
 
   useEffect(() => {
     const load = async () => {
@@ -113,10 +112,8 @@ function UserAccount() {
     try {
       await deleteCar(carId);
       setUserCars(prevUserCars => prevUserCars.filter(car => car.id !== carId));
-
       const updatedUser = { ...user, cars: userCars.filter(car => car.id !== carId) };
       localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-
       console.log(`Car with ID ${carId} deleted successfully.`);
     } catch (error: any) {
       console.error('Error deleting car:', error.message);
@@ -125,14 +122,14 @@ function UserAccount() {
 
   const dispatch = useDispatch();
 
-    useEffect(() => {
-        loadCarsActions(dispatch, userCars);
-    }, [dispatch, userCars]);
+  useEffect(() => {
+    loadCarsActions(dispatch, userCars);
+  }, [dispatch, userCars]);
 
   return (
     <>
       <Navbar isLogin={!!currentUser} handleLogOut={handleLogOut} />
-      <Box sx={{ display: 'flex'}}>
+      <Box sx={{ display: 'flex' }}>
         <Drawer
           sx={{
             width: 240,
@@ -159,6 +156,14 @@ function UserAccount() {
               </ListItemIcon>
               <ListItemText primary="Add Car" />
             </ListItemButton>
+            {user.role === 'Admin' && (
+              <ListItemButton onClick={() => handleMenuItemClick('Admin')} href="/admin">
+                <ListItemIcon>
+                  <AdminPanelSettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Admin panel" />
+              </ListItemButton>
+            )}
             <ListItemButton onClick={() => handleMenuItemClick('StartPage')} href="/">
               <ListItemIcon>
                 <Home />
@@ -179,15 +184,6 @@ function UserAccount() {
               <Typography variant="h5" component="div">
                 List of your cars:
               </Typography>
-              {/* {user.role === UserRole.ADMIN && (
-                        <Button variant="contained" color="primary" href="/admin" style={{ marginTop: '10px' }}>
-                            Admin Panel
-                        </Button>
-                    )} */}
-              {/* <Typography variant="h6">
-                        Cars Count: {user.cars.length}
-                    </Typography> */}
-
             </CardContent>
             {userCars.length > 0 ?
               <CarList onDeleteCar={onDeleteCar} />

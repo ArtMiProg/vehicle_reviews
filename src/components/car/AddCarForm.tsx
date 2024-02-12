@@ -94,42 +94,42 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onAddCar }) => {
           Fill in the details below to add a new car.
         </DialogContentText>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} marginTop={2}>
-        <InputLabel>Maker</InputLabel>
-        <FormControl fullWidth>
-          <Select value={maker} onChange={(e) => setMaker(e.target.value as string)}>
-            <MenuItem value="">Select Maker</MenuItem>
-            {data.map((auto) => (
-              <MenuItem key={auto.id} value={auto.name}>
-                {auto.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <InputLabel>Model</InputLabel>
-        <FormControl fullWidth>
-          <Select value={model} onChange={(e) => setModel(e.target.value as string)}>
-            <MenuItem value="">Select Model</MenuItem>
-            {maker &&
-              data
-                .find((auto) => auto.name === maker)
-                ?.models.map((model) => (
-                  <MenuItem key={model.id} value={model.name}>
-                    {model.name}
-                  </MenuItem>
-                ))}
-          </Select>
-        </FormControl>
-        <InputLabel>Fuel type</InputLabel>
-        <FormControl fullWidth>
-          <Select value={fuelType} onChange={(e) => setFuelType(e.target.value as FuelType)}>
-            <MenuItem value="">Select Fuel Type</MenuItem>
-            {Object.values(FuelType).map((fuelType) => (
-              <MenuItem key={fuelType} value={fuelType}>
-                {fuelType}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          <InputLabel>Maker</InputLabel>
+          <FormControl fullWidth>
+            <Select value={maker} onChange={(e) => setMaker(e.target.value as string)}>
+              <MenuItem value="">Select Maker</MenuItem>
+              {data.map((auto) => (
+                <MenuItem key={auto.id} value={auto.name}>
+                  {auto.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <InputLabel>Model</InputLabel>
+          <FormControl fullWidth>
+            <Select value={model} onChange={(e) => setModel(e.target.value as string)}>
+              <MenuItem value="">Select Model</MenuItem>
+              {maker &&
+                data
+                  .find((auto) => auto.name === maker)
+                  ?.models.map((model) => (
+                    <MenuItem key={model.id} value={model.name}>
+                      {model.name}
+                    </MenuItem>
+                  ))}
+            </Select>
+          </FormControl>
+          <InputLabel>Fuel type</InputLabel>
+          <FormControl fullWidth>
+            <Select value={fuelType} onChange={(e) => setFuelType(e.target.value as FuelType)}>
+              <MenuItem value="">Select Fuel Type</MenuItem>
+              {Object.values(FuelType).map((fuelType) => (
+                <MenuItem key={fuelType} value={fuelType}>
+                  {fuelType}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
       </DialogContent>
       <DialogActions>
