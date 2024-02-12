@@ -30,23 +30,28 @@ const Navbar: React.FC<NavbarProps> = ({ isLogin, handleLogOut }) => {
         setAnchorEl(null);
     };
 
-
-
     return (
         <AppBar position="static">
             <Toolbar>
-                <IconButton edge="start" color="inherit" aria-label="menu">
-                    <MenuIcon />
-                </IconButton>
-
                 <Typography variant="h6" style={{ flexGrow: 1 }}>
                     <Link to="/" style={linkStyle}>
                         Vehicle Reviews
                     </Link>
                 </Typography>
-
                 {isLogin ? (
                     <>
+                        {currentUser ? (
+                            <Typography
+                                variant="h6"
+                                component="div"
+                                sx={{ flexGrow: 1,
+                                    display: { xs: 'none', sm: 'block' },
+                                    maxWidth: '30%',
+                                    textAlign: 'right' }}
+                            >
+                                WELCOME, {currentUser.username}!
+                            </Typography>
+                        ) : null}
                         <IconButton
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
@@ -72,17 +77,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLogin, handleLogOut }) => {
                             </Link>
                             <MenuItem onClick={handleLogOut}>Log out</MenuItem>
                         </Menu>
-                        {currentUser ? (
-                        <Typography
-                            variant="h6"
-                            component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' },  maxWidth: '20%' }}
-                        >
-                            WELCOME, {currentUser.username}!
-                        </Typography>
-                        ) : null}
                     </>
-
                 ) : (
                     <>
                         <Link to="/signin" style={linkStyle}>

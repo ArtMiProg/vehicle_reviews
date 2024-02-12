@@ -29,6 +29,7 @@ function CreateReview() {
     const [currentUser, setCurrentUser] = useState<User | null>(
         JSON.parse(localStorage.getItem("currentUser") || "null")
     );
+    const navigate = useNavigate();
 
     const handleSignUpClick = () => {
         setShowRegistration(true);
@@ -52,9 +53,11 @@ function CreateReview() {
     };
 
     const handleLogOut = () => {
+        navigate('/');
         localStorage.removeItem("currentUser");
         setCurrentUser(null);
     };
+    
     useEffect(() => {
         setReleaseYear(new Date().getFullYear());
     }, []);
@@ -64,7 +67,6 @@ function CreateReview() {
 
     };
 
-    const navigate = useNavigate();
     // // @ts-ignore
     // const dispatch = useAppDispatch();
 
@@ -153,6 +155,7 @@ function CreateReview() {
     // setIsAddingReview(true);
 
     //};
+
     return (
         <Box>
             <Navbar isLogin={!!currentUser} handleLogOut={handleLogOut} />

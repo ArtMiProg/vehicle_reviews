@@ -38,15 +38,6 @@ const BannerContent = styled(Box)(({ theme }) => ({
 
 function StartPage() {
 
-    // const api = 'https://cars-base.ru/api/cars';
-    // const lastUpdateApi = (api + "/api/status");
-    // const makersAndModels = (api + "/api/cars?full=1")
-    // const makers = (api + "/api/cars");
-    // const modelsid = (api + "/api/cars/[mark_id]");
-
-    // npm install --save typescript @types/node @types/react-dam @types/jest
-    // d5-=FgDvMFt.bxB
-
     const navigate = useNavigate();
     const [showRegistration, setShowRegistration] = useState(false);
 

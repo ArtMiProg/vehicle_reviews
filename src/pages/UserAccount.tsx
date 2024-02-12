@@ -23,6 +23,7 @@ import Navbar from "../components/navbar/Navbar";
 import { User } from "../AuthContext";
 import { useDispatch } from "react-redux";
 import { loadCarsActions } from "../actions/loadings";
+import { useNavigate } from "react-router-dom";
 
 type MenuItems = 'Account' | 'Add Car' | 'Admin' | 'StartPage';
 
@@ -37,6 +38,7 @@ function UserAccount() {
   const [isAddingCar, setIsAddingCar] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MenuItems>('Account');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleMenuItemClick = (item: MenuItems) => {
     setSelectedItem(item);
@@ -51,6 +53,7 @@ function UserAccount() {
   };
 
   const handleLogOut = () => {
+    navigate('/');
     localStorage.removeItem("currentUser");
     setCurrentUser(null);
   };
