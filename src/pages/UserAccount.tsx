@@ -110,6 +110,7 @@ function UserAccount() {
 
   const onDeleteCar = async (carId: number) => {
     try {
+      console.log(carId)
       await deleteCar(carId);
       setUserCars(prevUserCars => prevUserCars.filter(car => car.id !== carId));
       const updatedUser = { ...user, cars: userCars.filter(car => car.id !== carId) };
