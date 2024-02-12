@@ -1,15 +1,11 @@
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Box, Button, Card, CardActions, CardContent, Grid, Rating } from '@mui/material';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Box, Button, Card, CardActions, CardContent, Grid, Rating } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
 import { FuelType } from '../../enums/FuelType';
 import { Item } from '../../pages/StartPage';
 import { StrapiCarResponse } from '../../strapi/strapiCar';
 import { OneReview } from '../review/ReviewComponent';
-import { useEffect, useState } from 'react';
 
 interface CarProps {
   car: StrapiCarResponse;

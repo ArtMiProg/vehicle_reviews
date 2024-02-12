@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { User } from "../../AuthContext";
-import { Link } from "react-router-dom";
-import { StrapiUser, deleteUser, loadAllUsers } from "../../strapi/strapiUser";
+import { Home } from "@mui/icons-material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip,
   Typography
 } from "@mui/material";
-import { Home } from "@mui/icons-material";
-import DeleteIcon from '@mui/icons-material/Delete';
-import Navbar from "../navbar/Navbar";
+import { useEffect, useState } from "react";
+import { User } from "../AuthContext";
+import Navbar from "../components/navbar/Navbar";
+import { StrapiUser, deleteUser, loadAllUsers } from "../strapi/strapiUser";
 
 type MenuItems = 'Account' | 'Add Car' | 'Admin' | 'StartPage';
 
@@ -90,7 +89,7 @@ function AdminPanel() {
           anchor="left"
         >
           <List>
-            <Typography variant="h5" gutterBottom sx={{marginLeft: 2}}>Admin Panel</Typography>
+            <Typography variant="h5" gutterBottom sx={{ marginLeft: 2 }}>Admin Panel</Typography>
             <ListItemButton onClick={() => handleMenuItemClick('Account')} href="/account">
               <ListItemIcon >
                 <AccountCircleIcon />

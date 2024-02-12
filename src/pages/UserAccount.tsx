@@ -1,9 +1,9 @@
+import { Home } from "@mui/icons-material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import {
   Box,
-  Button,
   Card,
   CardContent,
   Drawer,
@@ -14,16 +14,15 @@ import {
   Typography
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { User } from "../AuthContext";
+import { loadCarsActions } from "../actions/loadings";
 import AddCarForm from "../components/car/AddCarForm";
 import CarList from "../components/carList/CarList";
+import Navbar from "../components/navbar/Navbar";
 import { StrapiCar, deleteCar } from "../strapi/strapiCar";
 import { StrapiUser, addCarToUser, loadUserCars, loadUserRole } from "../strapi/strapiUser";
-import { Home } from "@mui/icons-material";
-import Navbar from "../components/navbar/Navbar";
-import { User } from "../AuthContext";
-import { useDispatch } from "react-redux";
-import { loadCarsActions } from "../actions/loadings";
-import { useNavigate } from "react-router-dom";
 
 type MenuItems = 'Account' | 'Add Car' | 'Admin' | 'StartPage';
 

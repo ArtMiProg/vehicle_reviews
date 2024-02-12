@@ -1,14 +1,13 @@
+import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import React, { useState } from "react";
-import { User } from "../AuthContext"
-import { TextField, Button, Box, Container, Typography } from '@mui/material';
-import { AlertState } from "./RegistrationForm";
 import CustomAlert from "../components/alert/CustomAlert";
+import { AlertState } from "./RegistrationForm";
 
 
 const SignInForm: React.FC = () => {
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    // const [errorMessage, setErrorMessage] = useState("");
     const [alert, setAlert] = useState<AlertState>({ show: false, severity: undefined, message: '' });
 
     async function handleSignIn(e: React.FormEvent<HTMLFormElement>) {

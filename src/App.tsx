@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import { AuthProvider } from './AuthContext';
 import { Content } from './Content';
-import AdminPanel from "./components/admin/AdminPanel";
+import AdminPanel from "./pages/AdminPanel";
 import CarReviews from './pages/CarReviews';
 import CreateReview from './pages/CreateReview';
 import RegistrationForm from './pages/RegistrationForm';

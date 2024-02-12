@@ -1,15 +1,14 @@
+import { Button, InputLabel, Rating, TextField, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
+import { User } from "../AuthContext";
+import { Fault } from "../components/fault/FaultComponent";
+import Navbar from "../components/navbar/Navbar";
+import { loadCarByCarId } from "../strapi/strapiCar";
 import { StrapiReview, addReview, addReviewToCar, loadLastReview } from "../strapi/strapiReview";
 import { StrapiUser } from "../strapi/strapiUser";
-import { loadCarByCarId } from "../strapi/strapiCar";
-import CreateFault from "../components/fault/CreateFault";
-import { Fault } from "../components/fault/FaultComponent";
-import Box from "@mui/material/Box";
-import { Button, FormControl, InputLabel, Rating, TextField, Typography } from "@mui/material";
-import Navbar from "../components/navbar/Navbar";
-import { User } from "../AuthContext";
 
 function CreateReview() {
     let { state } = useLocation();

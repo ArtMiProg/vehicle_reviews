@@ -1,17 +1,16 @@
+import { KeyboardArrowDown } from "@mui/icons-material";
+import { IconButton, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { StrapiListResponse } from "../strapi/strapi";
-import { loadCarsFromDb } from "../strapi/strapiCar";
+import { useNavigate } from "react-router-dom";
 import { User } from "../AuthContext";
 import { OneCar } from "../components/car/CarComponent";
 import Navbar from "../components/navbar/Navbar";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
-import Card from "@mui/material/Card";
-import { CardContent, IconButton, Typography } from "@mui/material";
-import { KeyboardArrowDown } from "@mui/icons-material";
+import { StrapiListResponse } from "../strapi/strapi";
+import { loadCarsFromDb } from "../strapi/strapiCar";
 
 export const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -45,7 +44,6 @@ function StartPage() {
         JSON.parse(localStorage.getItem("currentUser") || "null")
     );
 
-
     const handleSignUpClick = () => {
         setShowRegistration(true);
         navigate('/signup')
@@ -66,7 +64,6 @@ function StartPage() {
         setShowSignInForm(false);
         setCurrentUser(loggedInUser);
     };
-
 
     const handleLogOut = () => {
         localStorage.removeItem("currentUser");
