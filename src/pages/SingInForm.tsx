@@ -12,10 +12,12 @@ const SignInForm: React.FC = () => {
 
     async function handleSignIn(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-
+        // http://localhost:1337/api/auth/local
+        // http://localhost:1337/api/users/${user.id}?populate=role
+        // https://ingenious-novelty-a7dcbe42e4.strapiapp.com
         try {
             const identifier = username;
-            const response = await fetch('http://localhost:1337/api/auth/local', {
+            const response = await fetch('https://ingenious-novelty-a7dcbe42e4.strapiapp.com/api/auth/local', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -25,7 +27,7 @@ const SignInForm: React.FC = () => {
             const data = await response.json();
             const user = data.user;
             const TOKEN = process.env.REACT_APP_STRAPI_TOKEN;
-            const responseRole = await fetch(`http://localhost:1337/api/users/${user.id}?populate=role`, {
+            const responseRole = await fetch(`https://ingenious-novelty-a7dcbe42e4.strapiapp.com/api/users/${user.id}?populate=role`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${TOKEN}`,
