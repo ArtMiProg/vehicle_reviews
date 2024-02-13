@@ -96,6 +96,7 @@ function StartPage() {
         load();
     }, []);
 
+    console.log(allCars)
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchInput(event.target.value);
     };
