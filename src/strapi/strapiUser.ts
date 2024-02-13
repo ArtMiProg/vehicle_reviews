@@ -54,7 +54,7 @@ export async function addUser(
 }
 
 export async function loadUserCars(userId: number): Promise<StrapiListResponse<StrapiUser>> {
-    const response = await fetch(`http://localhost:1337/api/users/${userId}?populate=cars`, {
+    const response = await fetch(`${BASE_URL}/api/users/${userId}?populate=cars`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${TOKEN}`,
