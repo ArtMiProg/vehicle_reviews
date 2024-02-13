@@ -26,7 +26,7 @@ const SignInForm: React.FC = () => {
             });
             const data = await response.json();
             const user = data.user;
-            const TOKEN = '176a561b4f7da77c9938bdea38b97e757b27b392a6c30bed81aea04d6d61c20553848bfeae583394132ba9bd637325f5ef6fe96c221a6baad87d8d229f258cd4fed05f40f1850765cb03baec142baca17f877eb80b9696af65add434b1f02d85b6412a6c4e4c1d6e074524989b059c7bbbfab26fd8db4b52245e9f4107af3b46';
+            const TOKEN = process.env.REACT_APP_STRAPI_TOKEN;
             const responseRole = await fetch(`https://ingenious-novelty-a7dcbe42e4.strapiapp.com/api/users/${user.id}?populate=role`, {
                 method: 'GET',
                 headers: {
