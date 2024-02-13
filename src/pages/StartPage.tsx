@@ -138,10 +138,10 @@ function StartPage() {
                     >
                         <KeyboardArrowDown />
                     </IconButton>
-                    <Card sx={{position: 'absolute', top: '100px', right: '30px', backgroundColor: '#E0E0E0', alignItems: 'center'}}>
+                    <Card sx={{ position: 'absolute', top: '100px', right: '30px', backgroundColor: '#E0E0E0', alignItems: 'center' }}>
                         <CardContent>
                             <TextField
-                                sx={{  backgroundColor: 'white', top: '6px' }}
+                                sx={{ backgroundColor: 'white', top: '6px' }}
                                 label="Search car"
                                 variant="outlined"
                                 value={searchInput}
@@ -152,27 +152,34 @@ function StartPage() {
                     </Card>
                 </BannerContent>
             </BannerContainer>
-            <Box sx={{ flexGrow: 1 }}>
-                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="center">
-                    {filteredCars ? filteredCars?.map((car) => (
-                        <Grid item xs={3.5}>
-                            <Item>
-                                <OneCar key={car.id} car={car} />
-                            </Item>
+            {filteredCars
+                ? (
+                    <Box sx={{ flexGrow: 1 }}>
+                        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="center">
+                            {filteredCars ? filteredCars?.map((car) => (
+                                <Grid item xs={3.5}>
+                                    <Item>
+                                        <OneCar key={car.id} car={car} />
+                                    </Item>
+                                </Grid>
+                            )) : <Typography>Loading...</Typography>
+                            }
                         </Grid>
-                    )) : <Typography>Loading...</Typography>
-                    }
-                    {allCars ? allCars.data.map((car) => (
-
-                        <Grid item xs={3.5}>
-                            <Item>
-                                <OneCar key={car.id} car={car} />
-                            </Item>
+                    </Box>
+                ) : (
+                    <Box sx={{ flexGrow: 1 }}>
+                        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="center">
+                            {allCars ? allCars.data.map((car) => (
+                                <Grid item xs={3.5}>
+                                    <Item>
+                                        <OneCar key={car.id} car={car} />
+                                    </Item>
+                                </Grid>
+                            )) : <Typography>Loading...</Typography>}
                         </Grid>
-                    )) : <Typography>Loading...</Typography>
-                    }
-                </Grid>
-            </Box>
+                    </Box>
+                )
+            }
         </>
     )
 }
