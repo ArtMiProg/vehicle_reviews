@@ -2,8 +2,10 @@ import { Home } from "@mui/icons-material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Drawer,
@@ -11,6 +13,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Modal,
+  TextField,
   Typography
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -22,13 +26,13 @@ import AddCarForm from "../components/car/AddCarForm";
 import CarList from "../components/carList/CarList";
 import Navbar from "../components/navbar/Navbar";
 import { StrapiCar, deleteCar } from "../strapi/strapiCar";
-import { StrapiUser, addCarToUser, loadUserCars, loadUserRole } from "../strapi/strapiUser";
+import { StrapiUser, addCarToUser, changeUsername, loadUserCars, loadUserRole } from "../strapi/strapiUser";
 
 type MenuItems = 'Account' | 'Add Car' | 'Admin' | 'StartPage';
 
 function UserAccount() {
   const user: StrapiUser = JSON.parse(localStorage.getItem("currentUser") || "null");
-  const [currentUser, setCurrentUser] = useState<User | null>(
+  const [currentUser, setCurrentUser] = useState<StrapiUser | null>(
     JSON.parse(localStorage.getItem("currentUser") || "null")
   );
   const [userRole, setUserRole] = useState<string>();
@@ -37,6 +41,8 @@ function UserAccount() {
   const [isAddingCar, setIsAddingCar] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MenuItems>('Account');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isChangePersonDataOpen, setIsChangePersonDataOpen] = useState(false);
+  const [newUsername, setNewUsername] = useState<string>("");
   const navigate = useNavigate();
 
   const handleMenuItemClick = (item: MenuItems) => {
@@ -49,6 +55,15 @@ function UserAccount() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleOpenChangePersonalData = () => {
+    setIsChangePersonDataOpen(true);
+  };
+
+  const handleCloseChangePersonalData = () => {
+    setIsChangePersonDataOpen(false);
+    setNewUsername("");
   };
 
   const handleLogOut = () => {
@@ -112,7 +127,6 @@ function UserAccount() {
 
   const onDeleteCar = async (carId: number) => {
     try {
-      console.log(carId)
       await deleteCar(carId);
       setUserCars(prevUserCars => prevUserCars.filter(car => car.id !== carId));
       const updatedUser = { ...user, cars: userCars.filter(car => car.id !== carId) };
@@ -128,6 +142,20 @@ function UserAccount() {
   useEffect(() => {
     loadCarsActions(dispatch, userCars);
   }, [dispatch, userCars]);
+
+  const handleConfirmUsernameChange = async () => {
+    if (!currentUser) return;
+    const updatedUser = { ...currentUser, username: newUsername };
+    await changeUsername(updatedUser.id, newUsername);
+    setCurrentUser(updatedUser);
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    handleCloseChangePersonalData();
+    window.location.reload();
+  };
+
+  const handleNewUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewUsername(event.target.value);
+  };
 
   return (
     <>
@@ -167,6 +195,12 @@ function UserAccount() {
                 <ListItemText primary="Admin panel" />
               </ListItemButton>
             )}
+            <ListItemButton onClick={handleOpenChangePersonalData}>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Personal settings" />
+            </ListItemButton>
             <ListItemButton onClick={() => handleMenuItemClick('StartPage')} href="/">
               <ListItemIcon>
                 <Home />
@@ -174,6 +208,23 @@ function UserAccount() {
               <ListItemText primary="StartPage" />
             </ListItemButton>
           </List>
+          {isChangePersonDataOpen && (
+            <Modal open={isChangePersonDataOpen} onClose={handleCloseChangePersonalData}>
+              <Box sx={{ width: 400, bgcolor: 'background.paper', p: 2 }}>
+                <Typography variant="h5" component="div">
+                  Change Username
+                </Typography>
+                <TextField
+                  label="New Username"
+                  variant="outlined"
+                  value={newUsername}
+                  onChange={handleNewUsernameChange}
+                />
+                <Button onClick={handleConfirmUsernameChange}>Confirm</Button>
+                <Button onClick={handleCloseChangePersonalData}>Cancel</Button>
+              </Box>
+            </Modal>
+          )}
         </Drawer>
         <Box
           component="main"

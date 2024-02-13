@@ -137,3 +137,21 @@ export async function deleteUser(id: number): Promise<void>{
         throw new Error(`Failed to delete user: ${errorMessage}`);
     }
 }
+
+export async function changeUsername(id: number, newUsername: string): Promise<StrapiUser> {
+    try {
+        const response = await fetch(`${BASE_URL}/api/users/${id}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username: newUsername }),
+        });
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Error updating user cars:', error);
+        throw error;
+    }
+}
