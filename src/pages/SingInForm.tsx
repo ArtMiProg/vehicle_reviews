@@ -5,7 +5,8 @@ import { AlertState } from "./RegistrationForm";
 
 
 const SignInForm: React.FC = () => {
-
+    
+    const BASE_URL = process.env.REACT_APP_STRAPI_BASE_URL;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [alert, setAlert] = useState<AlertState>({ show: false, severity: undefined, message: '' });
@@ -17,7 +18,7 @@ const SignInForm: React.FC = () => {
         // https://ingenious-novelty-a7dcbe42e4.strapiapp.com
         try {
             const identifier = username;
-            const response = await fetch('https://ingenious-novelty-a7dcbe42e4.strapiapp.com/api/auth/local', {
+            const response = await fetch(`${BASE_URL}/api/auth/local`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -27,7 +28,7 @@ const SignInForm: React.FC = () => {
             const data = await response.json();
             const user = data.user;
             const TOKEN = process.env.REACT_APP_STRAPI_TOKEN;
-            const responseRole = await fetch(`https://ingenious-novelty-a7dcbe42e4.strapiapp.com/api/users/${user.id}?populate=role`, {
+            const responseRole = await fetch(`${BASE_URL}/api/users/${user.id}?populate=role`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${TOKEN}`,
