@@ -1,13 +1,7 @@
-import Accordion from '@mui/material/Accordion';
-import { StrapiFault } from '../../strapi/strapi';
-import { StrapiReview } from '../../strapi/strapiReview'
-import { User } from '../../AuthContext';
+import { StrapiReview } from '../../strapi/strapiReview';
 
-import { Fault, OneFault } from '../fault/FaultComponent';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { MenuItem, Rating } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { AccordionDetails, MenuItem, Rating } from '@mui/material';
 
 interface ReviewProps {
   review: StrapiReview;
@@ -21,7 +15,6 @@ export const OneReview: React.FC<ReviewProps> = (props) => {
       reviewId,
       carId,
       releaseYear,
-      // faults,
       generalImpression,
       starRating,
     },
@@ -60,7 +53,6 @@ export interface Review {
   userId: string | number;
   carId: string | undefined;
   releaseYear: string | number;
-  // faults: Fault[];
   generalImpression: string;
   starRating: number;
 }
@@ -70,7 +62,6 @@ export function createReview(
   userId: string | number,
   carId: string | undefined,
   releaseYear: string | number,
-  // faults: Fault[],
   generalImpression: string,
   starRating: number): Review {
   return {
@@ -78,7 +69,6 @@ export function createReview(
     userId,
     carId,
     releaseYear,
-    // faults,
     generalImpression,
     starRating,
   };

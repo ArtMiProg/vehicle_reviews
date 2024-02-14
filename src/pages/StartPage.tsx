@@ -1,16 +1,15 @@
 import { KeyboardArrowDown } from "@mui/icons-material";
-import { Button, Card, CardActions, CardContent, IconButton, TextField, Typography } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import { Button, Card, CardContent, IconButton, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import SearchIcon from '@mui/icons-material/Search';
 import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../AuthContext";
 import { OneCar } from "../components/car/CarComponent";
 import Navbar from "../components/navbar/Navbar";
-import { StrapiListResponse } from "../strapi/strapi";
 import { loadCarsFromDb } from "../strapi/strapiCar";
 
 export const Item = styled(Paper)(({ theme }) => ({

@@ -20,7 +20,6 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { User } from "../AuthContext";
 import { loadCarsActions } from "../actions/loadings";
 import AddCarForm from "../components/car/AddCarForm";
 import CarList from "../components/carList/CarList";

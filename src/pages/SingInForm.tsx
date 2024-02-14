@@ -10,12 +10,11 @@ const SignInForm: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [alert, setAlert] = useState<AlertState>({ show: false, severity: undefined, message: '' });
+    const [errorMessage, setErrorMessage] = useState("");
 
     async function handleSignIn(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        // http://localhost:1337/api/auth/local
-        // http://localhost:1337/api/users/${user.id}?populate=role
-        // https://ingenious-novelty-a7dcbe42e4.strapiapp.com
+        
         try {
             const identifier = username;
             const response = await fetch(`${BASE_URL}/api/auth/local`, {
@@ -53,12 +52,11 @@ const SignInForm: React.FC = () => {
                     setAlert({ show: false, severity: undefined, message: '' });
                     window.location.href = '/';
                 }, 500);
-                // onClose(user);
             } else {
                 setAlert({ show: true, severity: 'error', message: 'No such username or password' });
             }
         } catch (error) {
-            // setErrorMessage('Authentication failed. Please check your credentials.');
+            setErrorMessage('Authentication failed. Please check your credentials.');
         }
     };
 

@@ -17,7 +17,6 @@ function CreateReview() {
     const { carId } = useParams();
     const [releaseYear, setReleaseYear] = useState<string | number>("")
     const years: number[] = Array.from({ length: new Date().getFullYear() - 1900 }, (_, index) => new Date().getFullYear() - index);
-    const [faults, setFaults] = useState<Fault[]>([]);
     const [generalImpressionAboutCar, setGeneralImpressionAboutCar] = useState<string>("");
     const [isAddingReview, setIsAddingReview] = useState<boolean>(false);
     const [newReviewId, setNewReviewId] = useState<string>();
@@ -65,13 +64,6 @@ function CreateReview() {
         setGeneralImpressionAboutCar(generalImpressionAboutCar);
 
     };
-
-    // // @ts-ignore
-    // const dispatch = useAppDispatch();
-
-    // useEffect(() => {
-    //     loadReviewsActions(dispatch, reviews);
-    // }, [dispatch, reviews]);
 
     useEffect(() => {
         if (idsOfCarReviews.length != 0 && isAddingReview) {
@@ -137,23 +129,11 @@ function CreateReview() {
             reviewId: idForNewReview,
             carId: car?.carId,
             releaseYear: releaseYear,
-            //TODO
-            // faults: ['14', '15'],
             generalImpression: generalImpressionAboutCar,
             starRating: carRating
         }
         await addReview(reviewObject);
     };
-    //async function handleReviewSubmit() {
-
-    //@ts-ignore
-    // dispatch(actions.reviews.loadReviews(updatedReviews));
-    // localStorage.setItem('reviews', JSON.stringify(reviews));
-    // navigate("/account");
-
-    // setIsAddingReview(true);
-
-    //};
 
     return (
         <Box>
