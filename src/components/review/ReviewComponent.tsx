@@ -21,7 +21,7 @@ export const OneReview: React.FC<ReviewProps> = (props) => {
       reviewId,
       carId,
       releaseYear,
-      faults,
+      // faults,
       generalImpression,
       starRating,
     },
@@ -60,7 +60,7 @@ export interface Review {
   userId: string | number;
   carId: string | undefined;
   releaseYear: string | number;
-  faults: Fault[];
+  // faults: Fault[];
   generalImpression: string;
   starRating: number;
 }
@@ -70,7 +70,7 @@ export function createReview(
   userId: string | number,
   carId: string | undefined,
   releaseYear: string | number,
-  faults: Fault[],
+  // faults: Fault[],
   generalImpression: string,
   starRating: number): Review {
   return {
@@ -78,12 +78,12 @@ export function createReview(
     userId,
     carId,
     releaseYear,
-    faults,
+    // faults,
     generalImpression,
     starRating,
   };
 }
 
-export function addFaultToReview(review: Review, fault: Fault): void {
-  review.faults.push(fault);
-}
+// export function addFaultToReview(review: Review, fault: Fault): void {
+//   review.faults.push(fault);
+// }
