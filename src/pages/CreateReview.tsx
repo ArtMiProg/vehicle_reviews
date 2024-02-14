@@ -138,7 +138,7 @@ function CreateReview() {
             carId: car?.carId,
             releaseYear: releaseYear,
             //TODO
-            faults: ['14', '15'],
+            // faults: ['14', '15'],
             generalImpression: generalImpressionAboutCar,
             starRating: carRating
         }

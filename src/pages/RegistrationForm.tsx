@@ -3,7 +3,7 @@ import { UserRole } from '../AuthContext';
 import { createUser } from '../components/user/UserComponent';
 import { v4 as uuidv4 } from 'uuid';
 import { TextField, Button, Box, Container, Typography } from '@mui/material';
-import { addUser } from '../strapi/strapiUser';
+import { StrapiUser, addUser, loadAllUsers } from '../strapi/strapiUser';
 import CustomAlert from '../components/alert/CustomAlert';
 
 
@@ -24,6 +24,7 @@ function RegistrationForm() {
     const [errorMessage, setErrorMessage] = useState("");
     const [alert, setAlert] = useState<AlertState>({ show: false, severity: undefined, message: '' });
     const [countdown, setCountdown] = useState(3);
+    const [existingUsers, setExistingUsers] = useState<StrapiUser[]>([]);
 
     useEffect(() => {
         if (alert.show) {
@@ -43,11 +44,27 @@ function RegistrationForm() {
         }
     }, [alert.show]);
 
+    useEffect(() => {
+        const load = async () => {
+            try {
+                const users = await loadAllUsers();
+                setExistingUsers(users);
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    console.log(error.message);
+                } else {
+                    throw error;
+                }
+            }
+        }
+        load();
+    }, []);
+
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         const newUser = createUser(id, username, password, name, surname, role);
-        const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
+
         if (existingUsers.some((user: any) => user.username === username)) {
             setErrorMessage("Username already exists");
             return;
@@ -59,7 +76,7 @@ function RegistrationForm() {
         }
 
         const updatedUsers = [...existingUsers, newUser];
-        // localStorage.setItem("users", JSON.stringify(updatedUsers));
+        
         try {
             await addUser({
                 username: username,
@@ -80,6 +97,11 @@ function RegistrationForm() {
             }, 3000);
         } catch (error) {
             console.error('error creating user', error);
+            if (error instanceof Error) {
+                setErrorMessage(error.message || 'Failed to create user');
+            } else {
+                setErrorMessage('An error occurred while creating the user');
+            }
         }
 
     };

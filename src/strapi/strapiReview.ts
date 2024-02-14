@@ -13,9 +13,9 @@ export interface StrapiReview {
         reviewId: string | null;
         carId: string | null;
         releaseYear: string | number;
-        faults?: {
-            data: StrapiFault[];
-        }
+        // faults?: {
+        //     data: StrapiFault[];
+        // }
         generalImpression: string | null;
         starRating: number;
     }
@@ -47,7 +47,7 @@ export async function addReview(
         reviewId: string | null,
         carId: string | undefined,
         releaseYear: string | number,
-        faults: string[],
+        // faults: string[],
         generalImpression: string | null,
         starRating: number | null
     }
