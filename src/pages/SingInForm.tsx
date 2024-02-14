@@ -43,6 +43,7 @@ const SignInForm: React.FC = () => {
             console.log(user.role);
             if (!response.ok) {
                 throw new Error('Authentication failed');
+                setErrorMessage('Authentication failed. Please check your credentials.');
             }
             if (user) {
                 console.log(user)
@@ -54,6 +55,7 @@ const SignInForm: React.FC = () => {
                 }, 500);
             } else {
                 setAlert({ show: true, severity: 'error', message: 'No such username or password' });
+                
             }
         } catch (error) {
             setErrorMessage('Authentication failed. Please check your credentials.');
@@ -95,7 +97,7 @@ const SignInForm: React.FC = () => {
                         Cancel
                     </Button>
                 </form>
-                {/*{errorMessage && <p>{errorMessage}</p>}*/}
+                {errorMessage && <p>{errorMessage}</p>}
                 {alert.show && (
                     <Typography style={{ marginTop: "10px" }}>
                         <CustomAlert severity={alert.severity} message={alert.message} />
