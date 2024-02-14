@@ -26,13 +26,29 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onAddCar }) => {
   const [carsInDb, setCarsInDb] = useState<StrapiCar[]>();
   const [newCar, setNewCar] = useState<StrapiCar | undefined>();
   const [newCarId, setNewCarId] = useState<string>();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   useEffect(() => {
     async function fetchData() {
-      const loadedCars = await loadCarsFromDb();
-      setCarsInDb(loadedCars.data);
+      const { data, meta } = await loadCarsFromDb(currentPage, pageSize);
+      setCarsInDb(data);
+      setTotalPages(meta.pagination.pageCount);
     } fetchData();
-  }, [newCar]);
+  }, [newCar, currentPage, pageSize]);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+        setCurrentPage((prevPage) => prevPage + 1);
+    }
+};
+
+const handlePrevPage = () => {
+    if (currentPage > 1) {
+        setCurrentPage((prevPage) => prevPage - 1);
+    }
+};
 
   useEffect(() => {
     async function fetchData() {

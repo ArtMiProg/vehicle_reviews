@@ -58,8 +58,8 @@ export async function addCar(
     return result;
 }
 
-export async function loadCarsFromDb(): Promise<StrapiListResponse<StrapiCar>> {
-    const result = await fetch(`${BASE_URL}/api/cars?populate=reviews`, {
+export async function loadCarsFromDb(page: number, pageSize: number): Promise<StrapiListResponse<StrapiCar>> {
+    const result = await fetch(`${BASE_URL}/api/cars?pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=reviews`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${TOKEN}`,

@@ -82,7 +82,6 @@ export async function addReviewToCar(carId: number, idsOfCarReviews: number[]): 
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ data: { reviews: idsOfCarReviews } }),
-        // body: JSON.stringify({cars: carIds.map(id => ({ id })) }),
     })
     console.log(res)
     const result = await res.json();

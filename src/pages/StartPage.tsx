@@ -1,5 +1,5 @@
 import { KeyboardArrowDown } from "@mui/icons-material";
-import { Card, CardActions, CardContent, IconButton, TextField, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, IconButton, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -72,19 +72,19 @@ function StartPage() {
         setCurrentUser(null);
     };
 
-    // const allReviews: Review[] = JSON.parse(localStorage.getItem('reviews') || "null");
-
     // @ts-ignore 
-    // const  allReviews : Review[] = useAppSelector((state : ReviewsState) => state.reviews.reviews);
-
-    const [allCars, setAllCars] = useState<StrapiListResponse<StrapiCar>>();
+    const [allCars, setAllCars] = useState<StrapiCar[]>([]);
     const [searchInput, setSearchInput] = useState<string>("");
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [pageSize, setPageSize] = useState<number>(25);
+    const [totalPages, setTotalPages] = useState<number>(1);
 
     useEffect(() => {
         const load = async () => {
             try {
-                const cars = await loadCarsFromDb();
-                setAllCars(cars);
+                const { data, meta } = await loadCarsFromDb(currentPage, pageSize);
+                setAllCars(data);
+                setTotalPages(meta.pagination.pageCount);
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     console.log(error.message);
@@ -94,14 +94,25 @@ function StartPage() {
             }
         }
         load();
-    }, []);
+    }, [currentPage, pageSize]);
 
-    console.log(allCars)
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage((prevPage) => prevPage + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prevPage) => prevPage - 1);
+        }
+    };
+
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchInput(event.target.value);
     };
 
-    const filteredCars = allCars?.data.filter(car =>
+    const filteredCars = allCars?.filter(car =>
         car.attributes.maker && car.attributes.maker.toLowerCase().includes(searchInput.toLowerCase())
     );
 
@@ -153,6 +164,17 @@ function StartPage() {
                     </Card>
                 </BannerContent>
             </BannerContainer>
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '20px'}}>
+                <Button onClick={handlePrevPage} disabled={currentPage === 1}>
+                    Previous
+                </Button>
+                <Typography variant="body1">
+                    Page {currentPage} of {totalPages}
+                </Typography>
+                <Button onClick={handleNextPage} disabled={currentPage === totalPages}>
+                    Next
+                </Button>
+            </Box>
             {filteredCars
                 ? (
                     <Box sx={{ flexGrow: 1 }}>
@@ -170,7 +192,7 @@ function StartPage() {
                 ) : (
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="center">
-                            {allCars ? allCars.data.map((car) => (
+                            {allCars ? allCars.map((car) => (
                                 <Grid item xs={3.5}>
                                     <Item>
                                         <OneCar key={car.id} car={car} />
