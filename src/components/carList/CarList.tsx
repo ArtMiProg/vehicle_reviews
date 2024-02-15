@@ -14,12 +14,6 @@ const CarList: React.FC<{ onDeleteCar: (carId: number) => void }> = ({ onDeleteC
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteCarId, setDeleteCarId] = useState<number>(0);
 
-    // const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     loadSingleCarActions(dispatch, car);
-    // }, [dispatch, car]);
-
     const linkStyle = {
         textDecoration: 'none',
         color: 'inherit'
